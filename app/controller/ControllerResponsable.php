@@ -2,20 +2,24 @@
 
 require_once 'app/model/ModelProjet.php';
 
-class ControllerResponsable {
+class ControllerResponsable
+{
 
-    public static function listProjets() {
+    public static function listProjets()
+    {
         session_start();
         $id = $_SESSION['login_id'] ?? null;
         $projets = ModelProjet::getProjetsByResponsable($id);
         require 'app/view/responsable/listProjets.php';
     }
 
-    public static function formAjoutProjet() {
+    public static function formAjoutProjet()
+    {
         require 'app/view/responsable/formAjoutProjet.php';
     }
 
-    public static function ajoutProjet() {
+    public static function ajoutProjet()
+    {
         session_start();
         $id = $_SESSION['login_id'] ?? null;
         $label = $_POST['label'] ?? '';
@@ -23,12 +27,14 @@ class ControllerResponsable {
         self::listProjets();
     }
 
-    public static function listExaminateurs() {
+    public static function listExaminateurs()
+    {
         $examinateurs = ModelProjet::getAllExaminateurs();
         require 'app/view/responsable/listExaminateurs.php';
     }
 
-    public static function formAjoutExaminateur() {
+    public static function formAjoutExaminateur()
+    {
         session_start();
         $id = $_SESSION['login_id'] ?? null;
         $projets = ModelProjet::getProjetsByResponsable($id);
@@ -36,7 +42,8 @@ class ControllerResponsable {
         require 'app/view/responsable/formAjoutExaminateur.php';
     }
 
-    public static function ajoutExaminateur() {
+    public static function ajoutExaminateur()
+    {
         $idProjet = $_POST['idProjet'] ?? null;
         $idExaminateur = $_POST['idExaminateur'] ?? null;
         $creneau = $_POST['creneau'] ?? null;
@@ -44,7 +51,8 @@ class ControllerResponsable {
         self::listProjets();
     }
 
-    public static function listExaminateursProjet() {
+    public static function listExaminateursProjet()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $idProjet = $_POST['idProjet'] ?? null;
             $examinateurs = ModelProjet::getExaminateursByProjet($idProjet);
@@ -57,13 +65,19 @@ class ControllerResponsable {
         }
     }
 
-    public static function planningProjet() {
+    public static function planningProjet()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $idProjet = $_POST['idProjet'] ?? null;
             $rdvs = ModelProjet::getPlanningByProjet($idProjet);
             require('app/view/responsable/planningProjet.php');
         } else {
-            session_start();
+            if (session_status() === PHP_SESSION_NONE) {
+                if (session_status() === PHP_SESSION_NONE) {
+                    session_start();
+                }
+            }
+
             $id = $_SESSION['login_id'] ?? null;
             $projets = ModelProjet::getProjetsByResponsable($id);
             require('app/view/responsable/formSelectProjet.php');

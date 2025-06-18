@@ -1,5 +1,4 @@
 <?php
-
 require_once 'app/model/Model.php';
 
 class ModelProjet extends Model {
@@ -37,27 +36,18 @@ class ModelProjet extends Model {
     }
 
     public static function getExaminateursByProjet($idProjet) {
-        $sql = "SELECT DISTINCT p.id, p.nom, p.prenom
-                FROM creneau c
-                JOIN personne p ON c.examinateur = p.id
-                WHERE c.projet = :idProjet";
+        $sql = "SELECT DISTINCT examinateur_id, nom, prenom
+                FROM infocreneaux
+                WHERE projet_id = :idProjet";
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute(['idProjet' => $idProjet]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function getPlanningByProjet($idProjet) {
-        $sql = "SELECT et.nom AS etudiant_nom, et.prenom AS etudiant_prenom,
-                       cr.creneau AS horaire,
-                       ex.nom AS examinateur_nom, ex.prenom AS examinateur_prenom
-                FROM rdv r
-                JOIN creneau cr ON r.creneau = cr.id
-                JOIN personne et ON r.etudiant = et.id
-                JOIN personne ex ON cr.examinateur = ex.id
-                WHERE cr.projet = :idProjet";
+        $sql = "SELECT * FROM infordv WHERE projet_id = :idProjet";
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute(['idProjet' => $idProjet]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-

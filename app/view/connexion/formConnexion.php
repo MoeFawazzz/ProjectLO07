@@ -1,6 +1,17 @@
-<h2>Connexion</h2>
-<form method="POST" action="index.php?controller=connexion&action=connect">
-    <label>Login : <input type="text" name="login" required></label><br>
-    <label>Mot de passe : <input type="password" name="password" required></label><br>
-    <input type="submit" value="Se connecter">
+<?php require_once(__DIR__ . '/../fragment/fragmentMenu.php'); ?>
+
+<h2 class="my-4">Connexion</h2>
+
+<form method="post" action="index.php?controller=connexion&action=connect" class="mb-4">
+    <div class="mb-3">
+        <label for="login" class="form-label">Login :</label>
+        <input type="text" name="login" id="login" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Mot de passe :</label>
+        <input type="password" name="password" id="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Se connecter</button>
 </form>
+
+<?php require_once(__DIR__ . '/../fragment/fragmentFooter.php'); ?>

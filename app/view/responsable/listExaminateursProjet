@@ -1,6 +1,13 @@
-<h2>Examinateurs du projet</h2>
-<ul>
-<?php foreach ($examinateurs as $e): ?>
-    <li><?= htmlspecialchars($e['prenom']) ?> <?= htmlspecialchars($e['nom']) ?></li>
-<?php endforeach; ?>
+<?php require_once(__DIR__ . '/../fragment/fragmentMenu.php'); ?>
+
+<h2 class="my-4">Examinateurs du projet</h2>
+
+<ul class="list-group">
+    <?php foreach ($examinateurs as $e): ?>
+        <li class="list-group-item">
+            <?= htmlspecialchars($e['prenom']) ?> <?= htmlspecialchars($e['nom']) ?>
+        </li>
+    <?php endforeach; ?>
 </ul>
+
+<?php require_once(__DIR__ . '/../fragment/fragmentFooter.php'); ?>
