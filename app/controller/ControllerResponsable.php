@@ -1,86 +1,105 @@
 <?php
-
-require_once 'app/model/ModelProjet.php';
+// app/controller/ControllerResponsable.php
+require_once __DIR__ . '/../model/ModelProjet.php';
+require_once __DIR__ . '/../model/ModelPersonne.php';
 
 class ControllerResponsable
 {
+    // Vérifie que l'utilisateur est connecté et responsable
+    private static function checkAuth()
+    {
+        session_start();
+        if (empty($_SESSION['login_id']) || !$_SESSION['role_responsable']) {
+            header('Location: index.php?action=formConnexion');
+            exit();
+        }
+    }
 
     public static function listProjets()
     {
-        session_start();
-        $id = $_SESSION['login_id'] ?? null;
-        $projets = ModelProjet::getProjetsByResponsable($id);
-        require 'app/view/responsable/listProjets.php';
+        self::checkAuth();
+        $prs = ModelProjet::getProjetsByResponsable($_SESSION['login_id']);
+        require __DIR__ . '/../view/responsable/listProjets.php';
     }
 
     public static function formAjoutProjet()
     {
-        require 'app/view/responsable/formAjoutProjet.php';
+        self::checkAuth();
+        require __DIR__ . '/../view/responsable/formAjoutProjet.php';
     }
 
     public static function ajoutProjet()
     {
-        session_start();
-        $id = $_SESSION['login_id'] ?? null;
-        $label = $_POST['label'] ?? '';
-        ModelProjet::insertProjet($label, $id);
-        self::listProjets();
+        self::checkAuth();
+        $label  = trim($_POST['label']  ?? '');
+        $groupe = intval($_POST['groupe'] ?? 0);
+
+        if ($label === '' || $groupe < 1 || $groupe > 5) {
+            session_start();
+            $_SESSION['error_message'] = 'Données invalides pour le projet.';
+            header('Location: index.php?action=formAjoutProjet');
+            exit();
+        }
+
+        ModelProjet::insertProjet($label, $groupe, $_SESSION['login_id']);
+        header('Location: index.php?action=listProjets');
+        exit();
     }
 
     public static function listExaminateurs()
     {
-        $examinateurs = ModelProjet::getAllExaminateurs();
-        require 'app/view/responsable/listExaminateurs.php';
+        self::checkAuth();
+        $exs = ModelProjet::getAllExaminateurs();
+        require __DIR__ . '/../view/responsable/listExaminateurs.php';
     }
 
     public static function formAjoutExaminateur()
     {
-        session_start();
-        $id = $_SESSION['login_id'] ?? null;
-        $projets = ModelProjet::getProjetsByResponsable($id);
-        $examinateurs = ModelProjet::getAllExaminateurs();
-        require 'app/view/responsable/formAjoutExaminateur.php';
+        self::checkAuth();
+        require __DIR__ . '/../view/responsable/formAjoutExaminateur.php';
     }
 
     public static function ajoutExaminateur()
     {
-        $idProjet = $_POST['idProjet'] ?? null;
-        $idExaminateur = $_POST['idExaminateur'] ?? null;
-        $creneau = $_POST['creneau'] ?? null;
-        ModelProjet::ajouterExaminateurAuProjet($idProjet, $idExaminateur, $creneau);
-        self::listProjets();
+        self::checkAuth();
+        $nom    = trim($_POST['nom']    ?? '');
+        $prenom = trim($_POST['prenom'] ?? '');
+
+        if ($nom === '' || $prenom === '') {
+            session_start();
+            $_SESSION['error_message'] = 'Données invalides pour l\'examinateur.';
+            header('Location: index.php?action=formAjoutExaminateur');
+            exit();
+        }
+
+        ModelPersonne::insertPersonne($nom, $prenom, uniqid(), md5(uniqid()), 'examinateur');
+        header('Location: index.php?action=listExaminateurs');
+        exit();
     }
 
     public static function listExaminateursProjet()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idProjet = $_POST['idProjet'] ?? null;
-            $examinateurs = ModelProjet::getExaminateursByProjet($idProjet);
-            require('app/view/responsable/listExaminateursProjet.php');
+        self::checkAuth();
+        if (!empty($_POST['projet_id'])) {
+            $id  = intval($_POST['projet_id']);
+            $exs = ModelProjet::getExaminateursByProjet($id);
+            require __DIR__ . '/../view/responsable/listExaminateursProjet.php';
         } else {
-            session_start();
-            $id = $_SESSION['login_id'] ?? null;
-            $projets = ModelProjet::getProjetsByResponsable($id);
-            require('app/view/responsable/formSelectProjet.php');
+            $prs = ModelProjet::getProjetsByResponsable($_SESSION['login_id']);
+            require __DIR__ . '/../view/responsable/formSelectProjet.php';
         }
     }
 
     public static function planningProjet()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idProjet = $_POST['idProjet'] ?? null;
-            $rdvs = ModelProjet::getPlanningByProjet($idProjet);
-            require('app/view/responsable/planningProjet.php');
+        self::checkAuth();
+        if (!empty($_POST['projet_id'])) {
+            $id  = intval($_POST['projet_id']);
+            $rvs = ModelProjet::getPlanningByProjet($id);
+            require __DIR__ . '/../view/responsable/planningProjet.php';
         } else {
-            if (session_status() === PHP_SESSION_NONE) {
-                if (session_status() === PHP_SESSION_NONE) {
-                    session_start();
-                }
-            }
-
-            $id = $_SESSION['login_id'] ?? null;
-            $projets = ModelProjet::getProjetsByResponsable($id);
-            require('app/view/responsable/formSelectProjet.php');
+            $prs = ModelProjet::getProjetsByResponsable($_SESSION['login_id']);
+            require __DIR__ . '/../view/responsable/formSelectProjet.php';
         }
     }
 }

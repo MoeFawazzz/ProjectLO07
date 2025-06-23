@@ -2,7 +2,7 @@
 
 <h2 class="my-4">Connexion</h2>
 
-<form method="post" action="index.php?controller=connexion&action=connect" class="mb-4">
+<form method="post" action="index.php?action=login" class="mb-4">
     <div class="mb-3">
         <label for="login" class="form-label">Login :</label>
         <input type="text" name="login" id="login" class="form-control" required>

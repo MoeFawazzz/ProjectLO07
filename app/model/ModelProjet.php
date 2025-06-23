@@ -1,53 +1,50 @@
 <?php
-require_once 'app/model/Model.php';
+// app/model/ModelProjet.php
+require_once __DIR__ . '/Model.php';
 
-class ModelProjet extends Model {
-
-    public static function getProjetsByResponsable($id) {
-        $sql = "SELECT * FROM projet WHERE responsable = :id";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->execute(['id' => $id]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+class ModelProjet extends Model
+{
+    public static function getProjetsByResponsable(int $respId): array
+    {
+        $sql = "SELECT id,label,groupe FROM projet WHERE responsable=:res";
+        return self::selectAll($sql, ['res' => $respId]);
     }
 
-    public static function insertProjet($label, $idResponsable) {
-        $sql = "INSERT INTO projet (label, responsable) VALUES (:label, :responsable)";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->execute([
-            'label' => $label,
-            'responsable' => $idResponsable
+    public static function insertProjet(string $label, int $groupe, int $respId): bool
+    {
+        $sql = "INSERT INTO projet (label,groupe,responsable)
+                VALUES (:lab,:grp,:res)";
+        return self::executeQuery($sql, [
+            'lab' => $label,
+            'grp' => $groupe,
+            'res' => $respId
         ]);
     }
 
-    public static function getAllExaminateurs() {
-        $sql = "SELECT * FROM personne WHERE role_examinateur = 1";
-        $stmt = self::$pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public static function getAllExaminateurs(): array
+    {
+        $sql = "SELECT id,nom,prenom FROM personne WHERE role_examinateur=1";
+        return self::selectAll($sql);
     }
 
-    public static function ajouterExaminateurAuProjet($idProjet, $idExaminateur, $creneau) {
-        $sql = "INSERT INTO creneau (projet, examinateur, creneau) VALUES (:projet, :examinateur, :creneau)";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->execute([
-            'projet' => $idProjet,
-            'examinateur' => $idExaminateur,
-            'creneau' => $creneau
-        ]);
+    public static function getExaminateursByProjet(int $projetId): array
+    {
+        $sql = "SELECT DISTINCT p.id,p.nom,p.prenom
+                FROM infocreneaux ic
+                JOIN personne p ON p.id=ic.examinateur_id
+                WHERE ic.projet_id=:p";
+        return self::selectAll($sql, ['p' => $projetId]);
     }
 
-    public static function getExaminateursByProjet($idProjet) {
-        $sql = "SELECT DISTINCT examinateur_id, nom, prenom
-                FROM infocreneaux
-                WHERE projet_id = :idProjet";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->execute(['idProjet' => $idProjet]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public static function getPlanningByProjet($idProjet) {
-        $sql = "SELECT * FROM infordv WHERE projet_id = :idProjet";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->execute(['idProjet' => $idProjet]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public static function getPlanningByProjet(int $projetId): array
+    {
+        $sql = "SELECT ic.date,ic.heure,p.nom AS examNom,p.prenom AS examPrenom
+                FROM infocreneaux ic
+                JOIN personne p ON p.id=ic.examinateur_id
+                WHERE ic.projet_id=:p
+                ORDER BY ic.date,ic.heure";
+        return self::selectAll($sql, ['p' => $projetId]);
     }
 }
+
+?>

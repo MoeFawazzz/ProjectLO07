@@ -1,21 +1,46 @@
 <?php
-require_once 'app/controller/config.php';
+// app/model/Model.php
+require_once __DIR__ . '/../controller/config.php';
 
-abstract class Model {
-    public static $pdo;
+class Model
+{
+    /** @var PDO */
+    protected static $pdo = null;
 
-    public static function Init() {
-        global $dsn, $username, $password;
-
-        try {
-            self::$pdo = new PDO($dsn, $username, $password, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-            ]);
-        } catch (PDOException $e) {
-            echo "Erreur de connexion : " . $e->getMessage();
-            die();
+    protected static function initPDO()
+    {
+        if (self::$pdo === null) {
+            try {
+                self::$pdo = new PDO(DB_DSN, DB_USER, DB_PASS);
+                self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                die('Erreur de connexion à la BDD : ' . $e->getMessage());
+            }
         }
+    }
+
+    protected static function selectAll(string $sql, array $params = []): array
+    {
+        self::initPDO();
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    protected static function selectOne(string $sql, array $params = [])
+    {
+        self::initPDO();
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    protected static function executeQuery(string $sql, array $params = []): bool
+    {
+        self::initPDO();
+        $stmt = self::$pdo->prepare($sql);
+        return $stmt->execute($params);
     }
 }
 
-Model::Init();
+?>

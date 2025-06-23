@@ -9,9 +9,10 @@ if (!defined('DEBUG')) {
 
 // ===============
 // Configuration de la base de données sur dev-isi////"dev-isi.utt.fr"
-$dsn = 'mysql:dbname=danguila;host=localhost;charset=utf8';
-$username = 'danguila';
-$password = 'Ly4m4lZ8';
+
+define('DB_DSN',  'mysql:dbname=danguila;host=localhost;charset=utf8');
+define('DB_USER', 'danguila');
+define('DB_PASS', 'Ly4m4lZ8');
 
 if (!defined('LOCAL')) {
     define('LOCAL', FALSE); // TRUE pour lancer en local

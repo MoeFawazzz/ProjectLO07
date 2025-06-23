@@ -1,0 +1,52 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) session_start();
+$etu1 = 'DANGUILLAUME';
+$etu2 = 'FAWAZ'; 
+$loggedIn = isset($_SESSION['login_id']);
+?>
+<nav class="navbar navbar-expand-lg bg-success fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white" href="index.php?action=index">LO07 Soutenances</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <span class="navbar-text text-white"><?php echo "$etu1 / $etu2"; ?></span>
+        </li>
+        <?php if ($loggedIn): ?>
+          <li class="nav-item">
+            <span class="navbar-text text-white ms-3"><?php echo htmlspecialchars(
+              \$_SESSION['login_prenom'].' '.\$_SESSION['login_nom']
+            ); ?></span>
+          </li>
+          <?php if (!empty(\$_SESSION['role_responsable'])): ?>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">Responsable</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="index.php?action=listProjets">Mes projets</a></li>
+                <li><a class="dropdown-item" href="index.php?action=formAjoutProjet">Ajouter projet</a></li>
+                <li><a class="dropdown-item" href="index.php?action=listExaminateurs">Tous examinateurs</a></li>
+                <li><a class="dropdown-item" href="index.php?action=formAjoutExaminateur">Ajouter examinateur</a></li>
+                <li><a class="dropdown-item" href="index.php?action=listExaminateursProjet">Examinateurs d’un projet</a></li>
+                <li><a class="dropdown-item" href="index.php?action=planningProjet">Planning projet</a></li>
+              </ul>
+            </li>
+          <?php endif; ?>
+          <?php if (!empty(\$_SESSION['role_examinateur'])): ?>
+            <li class="nav-item"><a class="nav-link text-white" href="#">Examinateur</a></li>
+          <?php endif; ?>
+          <?php if (!empty(\$_SESSION['role_etudiant'])): ?>
+            <li class="nav-item"><a class="nav-link text-white" href="#">Étudiant</a></li>
+          <?php endif; ?>
+          <li class="nav-item"><a class="nav-link text-white" href="index.php?action=logout">Déconnexion</a></li>
+        <?php else: ?>
+          <li class="nav-item"><a class="nav-link text-white" href="index.php?action=formConnexion">Connexion</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="index.php?action=formInscription">Inscription</a></li>
+        <?php endif; ?>
+        <li class="nav-item"><a class="nav-link text-white" href="index.php?action=index">Innovations</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

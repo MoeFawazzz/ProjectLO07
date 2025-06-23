@@ -1,18 +1,23 @@
-<?php require_once(__DIR__ . '/../fragment/fragmentMenu.php'); ?>
-
-<h2 class="my-4">Liste des examinateurs</h2>
-
-<ul class="list-group mb-4">
-    <?php foreach ($examinateurs as $examinateur): ?>
-        <li class="list-group-item">
-            <?= htmlspecialchars($examinateur['prenom']) ?> <?= htmlspecialchars($examinateur['nom']) ?>
-            (ID : <?= $examinateur['id'] ?>)
-        </li>
-    <?php endforeach; ?>
-</ul>
-
-<a href="index.php?controller=responsable&action=formAjoutExaminateur" class="btn btn-primary">
-    Assigner un examinateur à un projet
-</a>
-
-<?php require_once(__DIR__ . '/../fragment/fragmentFooter.php'); ?>
+<?php
+// app/view/responsable/listExaminateurs.php
+require __DIR__ . '/../../view/fragment/fragmentMenu.php';
+?>
+<div class="container mt-5 pt-5">
+  <h2>Examinateurs</h2>
+  <?php if (empty($exs)): ?>
+    <p>Aucun examinateur.</p>
+  <?php else: ?>
+    <table class="table">
+      <thead><tr><th>ID</th><th>Nom</th><th>Prénom</th></tr></thead>
+      <tbody>
+      <?php foreach($exs as $e): ?>
+        <tr>
+          <td><?= $e['id'] ?></td>
+          <td><?= htmlspecialchars($e['nom']) ?></td>
+          <td><?= htmlspecialchars($e['prenom']) ?></td>
+        </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
+  <?php endif; ?>
+</div>
