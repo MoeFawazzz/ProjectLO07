@@ -1,4 +1,8 @@
-<?php require_once(__DIR__ . '/../fragment/fragmentMenu.php'); ?>
+<?php
+require __DIR__ . '/../fragment/fragmentHeader.html';
+require __DIR__ . '/../fragment/fragmentJumbotron.html';
+require __DIR__ . '/../fragment/fragmentMenu.html';
+?>
 
 <h2 class="my-4">Inscription</h2>
 
@@ -30,4 +34,4 @@
     <button type="submit" class="btn btn-success">S'inscrire</button>
 </form>
 
-<?php require_once(__DIR__ . '/../fragment/fragmentFooter.php'); ?>
+<?php require __DIR__ . '/../fragment/fragmentFooter.php'; ?>

@@ -1,6 +1,6 @@
 <?php
 // app/view/responsable/listProjets.php
-require __DIR__ . '/../../view/fragment/fragmentMenu.php';
+require __DIR__ . '/../../view/fragment/fragmentMenu.html';
 ?>
 <div class="container mt-5 pt-5">
   <h2>Mes projets</h2>
@@ -21,3 +21,5 @@ require __DIR__ . '/../../view/fragment/fragmentMenu.php';
     </table>
   <?php endif; ?>
 </div>
+
+<?php require __DIR__ . '/../fragment/fragmentFooter.php'; ?>

@@ -1,4 +1,4 @@
-<?php require_once(__DIR__ . '/../fragment/fragmentMenu.php'); ?>
+<?php require_once(__DIR__ . '/../fragment/fragmentMenu.html'); ?>
 
 <h2 class="my-4">Examinateurs du projet</h2>
 
@@ -10,4 +10,4 @@
     <?php endforeach; ?>
 </ul>
 
-<?php require_once(__DIR__ . '/../fragment/fragmentFooter.php'); ?>
+<?php require __DIR__ . '/../fragment/fragmentFooter.php'; ?>

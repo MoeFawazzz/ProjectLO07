@@ -1,6 +1,6 @@
 <?php
 // app/view/responsable/formAjoutProjet.php
-require __DIR__ . '/../../view/fragment/fragmentMenu.php';
+require __DIR__ . '/../../view/fragment/fragmentMenu.html';
 ?>
 <div class="container mt-5 pt-5">
   <h2>Ajouter un projet</h2>
@@ -16,3 +16,5 @@ require __DIR__ . '/../../view/fragment/fragmentMenu.php';
     <button type="submit" class="btn btn-success">Créer</button>
   </form>
 </div>
+
+<?php require __DIR__ . '/../fragment/fragmentFooter.php'; ?>
