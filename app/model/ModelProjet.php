@@ -4,6 +4,14 @@ require_once __DIR__ . '/Model.php';
 
 class ModelProjet extends Model
 {
+    /** Récupère un projet (label + groupe) */
+    public static function getProjetById(int $id)
+    {
+        $sql = "SELECT label, groupe FROM projet WHERE id = :id";
+        return self::selectOne($sql, ['id' => $id]);
+    }
+
+    /** Projets d’un responsable */
     public static function getProjetsByResponsable(int $respId): array
     {
         $sql = "SELECT id, label, groupe
@@ -12,15 +20,12 @@ class ModelProjet extends Model
         return self::selectAll($sql, ['res' => $respId]);
     }
 
+    /** Insère un projet (génération manuelle d’id si nécessaire) */
     public static function insertProjet(string $label, int $groupe, int $respId): bool
     {
-        // Génération manuelle de l'ID
         $newId = self::getNextId('projet');
-
-        $sql = "INSERT INTO projet
-                (id, label, groupe, responsable)
-                VALUES
-                (:id, :lab, :grp, :res)";
+        $sql = "INSERT INTO projet (id, label, groupe, responsable)
+                VALUES (:id, :lab, :grp, :res)";
         return self::executeQuery($sql, [
             'id'  => $newId,
             'lab' => $label,
@@ -29,6 +34,7 @@ class ModelProjet extends Model
         ]);
     }
 
+    /** Tous les examinateurs */
     public static function getAllExaminateurs(): array
     {
         $sql = "SELECT id, nom, prenom
@@ -37,6 +43,7 @@ class ModelProjet extends Model
         return self::selectAll($sql);
     }
 
+    /** Examinateurs d’un projet */
     public static function getExaminateursByProjet(int $projetId): array
     {
         $sql = "SELECT DISTINCT p.id, p.nom, p.prenom
@@ -46,18 +53,25 @@ class ModelProjet extends Model
         return self::selectAll($sql, ['p' => $projetId]);
     }
 
+    /** Planning (creneau + examinateur + étudiants groupés) */
     public static function getPlanningByProjet(int $projetId): array
     {
-        // Infocreneaux n'a pas de colonnes 'date'/'heure' : on découpe CR.creneau
-        $sql = "SELECT 
-                    DATE(creneau) AS date, 
-                    TIME(creneau) AS heure,
-                    examinateur_id,
-                    nom       AS examNom,
-                    prenom    AS examPrenom
-                FROM infocreneaux
-                WHERE projet_id = :p
-                ORDER BY creneau";
+        $sql = "
+            SELECT 
+              cr.creneau AS datetime,
+              CONCAT(ex.prenom,' ',ex.nom) AS examinateur,
+              GROUP_CONCAT(
+                DISTINCT CONCAT(et.prenom,' ',et.nom)
+                ORDER BY et.nom SEPARATOR ', '
+              ) AS etudiants
+            FROM creneau cr
+            JOIN personne ex ON ex.id = cr.examinateur
+            LEFT JOIN rdv r ON r.creneau = cr.id
+            LEFT JOIN personne et ON et.id = r.etudiant
+            WHERE cr.projet = :p
+            GROUP BY cr.id, cr.creneau, ex.prenom, ex.nom
+            ORDER BY cr.creneau
+        ";
         return self::selectAll($sql, ['p' => $projetId]);
     }
 }

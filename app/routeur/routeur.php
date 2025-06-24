@@ -1,23 +1,24 @@
 <?php
-// app/routeur/routeur.php
 
-// Charge les contrôleurs
+$action = $_GET['action'] ?? 'index';
+
 require_once __DIR__ . '/../controller/ControllerConnexion.php';
 require_once __DIR__ . '/../controller/ControllerResponsable.php';
 require_once __DIR__ . '/../controller/ControllerRdv.php';
 
-// Récupère l'action depuis l'URL et la sanitise
-$action = $_GET['action'] ?? 'index';
-$action = preg_replace('/[^a-zA-Z0-9_]/', '', $action);
-
-// Dispatche vers la méthode correspondante
 switch ($action) {
-    // Authentification
+    // Connexion & Inscription
+    case 'index':
+        ControllerConnexion::index();
+        break;
     case 'formConnexion':
         ControllerConnexion::formConnexion();
         break;
     case 'login':
         ControllerConnexion::login();
+        break;
+    case 'logout':
+        ControllerConnexion::logout();
         break;
     case 'formInscription':
         ControllerConnexion::formInscription();
@@ -25,11 +26,8 @@ switch ($action) {
     case 'register':
         ControllerConnexion::register();
         break;
-    case 'logout':
-        ControllerConnexion::logout();
-        break;
 
-    // Responsables
+    // Responsable
     case 'listProjets':
         ControllerResponsable::listProjets();
         break;
@@ -55,7 +53,7 @@ switch ($action) {
         ControllerResponsable::planningProjet();
         break;
 
-    // Rdvs
+    // RDV
     case 'listRdvs':
         ControllerRdv::listRdvs();
         break;
@@ -63,9 +61,8 @@ switch ($action) {
         ControllerRdv::detailRdv();
         break;
 
-    // Page d’accueil par défaut
-    case 'index':
     default:
-        ControllerRdv::listRdvs();
+        http_response_code(404);
+        echo "Erreur 404 : action « {$action} » inconnue.";
         break;
 }
