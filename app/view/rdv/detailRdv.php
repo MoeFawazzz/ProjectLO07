@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../fragment/fragmentHeader.html';
 require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.html';
+require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 <div class="container mt-5 pt-5">
     <?php if (empty($rdv)): ?>

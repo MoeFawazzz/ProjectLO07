@@ -1,6 +1,6 @@
 <?php
 // app/view/responsable/listExaminateurs.php
-require __DIR__ . '/../../view/fragment/fragmentMenu.html';
+require __DIR__ . '/../../view/fragment/fragmentMenu.php';
 ?>
 <div class="container mt-5 pt-5">
   <h2>Examinateurs</h2>

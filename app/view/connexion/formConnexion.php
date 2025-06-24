@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../fragment/fragmentHeader.html';
 require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.html';
+require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 
 <h2 class="my-4">Connexion</h2>

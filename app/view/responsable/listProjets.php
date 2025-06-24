@@ -1,6 +1,6 @@
 <?php
 // app/view/responsable/listProjets.php
-require __DIR__ . '/../../view/fragment/fragmentMenu.html';
+require __DIR__ . '/../../view/fragment/fragmentMenu.php';
 ?>
 <div class="container mt-5 pt-5">
   <h2>Mes projets</h2>
