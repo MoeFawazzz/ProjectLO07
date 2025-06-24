@@ -1,25 +1,32 @@
 <?php
 // app/view/responsable/listProjets.php
-require __DIR__ . '/../../view/fragment/fragmentMenu.php';
+require __DIR__ . '/../fragment/fragmentHeader.html';
+require __DIR__ . '/../fragment/fragmentJumbotron.html';
+require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
-<div class="container mt-5 pt-5">
+<div class="container mt-4 pt-5">
   <h2>Mes projets</h2>
   <?php if (empty($prs)): ?>
-    <p>Aucun projet.</p>
+    <div class="alert alert-info">Aucun projet.</div>
   <?php else: ?>
-    <table class="table">
-      <thead><tr><th>ID</th><th>Label</th><th>Groupe</th></tr></thead>
-      <tbody>
-      <?php foreach($prs as $p): ?>
+    <table class="table table-striped">
+      <thead class="table-dark">
         <tr>
-          <td><?= $p['id'] ?></td>
-          <td><?= htmlspecialchars($p['label']) ?></td>
-          <td><?= $p['groupe'] ?></td>
+          <th>ID</th>
+          <th>Label</th>
+          <th>Groupe</th>
         </tr>
-      <?php endforeach; ?>
+      </thead>
+      <tbody>
+        <?php foreach ($prs as $p): ?>
+          <tr>
+            <td><?= htmlspecialchars($p['id']) ?></td>
+            <td><?= htmlspecialchars($p['label']) ?></td>
+            <td><?= htmlspecialchars($p['groupe']) ?></td>
+          </tr>
+        <?php endforeach; ?>
       </tbody>
     </table>
   <?php endif; ?>
 </div>
-
-<?php require __DIR__ . '/../fragment/fragmentFooter.php'; ?>
+<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

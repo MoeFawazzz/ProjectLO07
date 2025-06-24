@@ -1,47 +1,86 @@
-<!-- app/view/fragment/fragmentMenu.html -->
-<?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
-<nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
+<?php
+// app/view/fragment/fragmentMenu.php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$loggedIn = !empty($_SESSION['login_id']);
+?>
+<nav class="navbar navbar-expand-lg bg-success fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="index.php?action=listRdvs">LO07 Soutenances</a>
+    <a class="navbar-brand text-white" href="index.php?action=index">LO07 Soutenances</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navMenu">
-      <ul class="navbar-nav me-auto ms-3">
-        <li class="nav-item">
-          <span class="navbar-text text-white">DANGUILLAUME / FAWAZ</span>
+      <ul class="navbar-nav me-auto">
+
+        <?php if ($loggedIn && $_SESSION['role_responsable']): ?>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+            Responsable
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="index.php?action=listProjets">Liste des projets</a></li>
+            <li><a class="dropdown-item" href="index.php?action=formAjoutProjet">Ajout d'un projet</a></li>
+            <li><a class="dropdown-item" href="index.php?action=listExaminateurs">Liste des examinateurs</a></li>
+            <li><a class="dropdown-item" href="index.php?action=formAjoutExaminateur">Ajout d'un examinateur</a></li>
+            <li><a class="dropdown-item" href="index.php?action=listExaminateursProjet">Liste des examinateurs d'un projet</a></li>
+            <li><a class="dropdown-item" href="index.php?action=planningProjet">Planning d'un projet</a></li>
+          </ul>
         </li>
-        <?php if (isset($_SESSION['login_id'])): ?>
-          <li class="nav-item ms-3">
-            <span class="navbar-text text-white">
-              <?= htmlspecialchars($_SESSION['login_prenom'] . ' ' . $_SESSION['login_nom']) ?>
-            </span>
-          </li>
-          <?php if (!empty($_SESSION['role_responsable'])): ?>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Responsable</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="index.php?action=listProjets">Mes projets</a></li>
-                <li><a class="dropdown-item" href="index.php?action=formAjoutProjet">Ajouter projet</a></li>
-                <li><a class="dropdown-item" href="index.php?action=listExaminateurs">Tous examinateurs</a></li>
-                <li><a class="dropdown-item" href="index.php?action=formAjoutExaminateur">Ajouter examinateur</a></li>
-                <li><a class="dropdown-item" href="index.php?action=listExaminateursProjet">Examinateurs d’un projet</a></li>
-                <li><a class="dropdown-item" href="index.php?action=planningProjet">Planning projet</a></li>
-              </ul>
-            </li>
-          <?php endif; ?>
-          <?php if (!empty($_SESSION['role_examinateur'])): ?>
-            <li class="nav-item"><a class="nav-link" href="#">Examinateur</a></li>
-          <?php endif; ?>
-          <?php if (!empty($_SESSION['role_etudiant'])): ?>
-            <li class="nav-item"><a class="nav-link" href="#">Étudiant</a></li>
-          <?php endif; ?>
-          <li class="nav-item"><a class="nav-link" href="index.php?action=logout">Déconnexion</a></li>
-        <?php else: ?>
-          <li class="nav-item"><a class="nav-link" href="index.php?action=formConnexion">Connexion</a></li>
-          <li class="nav-item"><a class="nav-link" href="index.php?action=formInscription">Inscription</a></li>
         <?php endif; ?>
-        <li class="nav-item"><a class="nav-link" href="index.php?action=listRdvs">RDV</a></li>
+
+        <?php if ($loggedIn && $_SESSION['role_examinateur']): ?>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+            Examinateur
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="index.php?action=listProjets">Liste des projets</a></li>
+            <li><a class="dropdown-item" href="index.php?action=listMesCreneaux">Liste complète de mes créneaux</a></li>
+            <li><a class="dropdown-item" href="index.php?action=listCreneauxProjet">Liste de mes créneaux pour un projet</a></li>
+            <li><a class="dropdown-item" href="index.php?action=formAjoutCreneau">Ajouter un créneau à un projet</a></li>
+            <li><a class="dropdown-item" href="index.php?action=formAjoutCreneauxConsecutifs">Ajouter des créneaux consécutifs</a></li>
+          </ul>
+        </li>
+        <?php endif; ?>
+
+        <?php if ($loggedIn && $_SESSION['role_etudiant']): ?>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+            Étudiant
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="index.php?action=listRdvs">Liste de mes RDV</a></li>
+            <li><a class="dropdown-item" href="index.php?action=formPrendreRdv">Prendre un RDV pour un projet</a></li>
+          </ul>
+        </li>
+        <?php endif; ?>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+            Innovations
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="index.php?action=proposeFeature">Proposez une fonctionnalité originale</a></li>
+            <li><a class="dropdown-item" href="index.php?action=proposeMVC">Proposez une amélioration MVC</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+            Se connecter
+          </a>
+          <ul class="dropdown-menu">
+            <?php if (!$loggedIn): ?>
+              <li><a class="dropdown-item" href="index.php?action=formConnexion">Login</a></li>
+              <li><a class="dropdown-item" href="index.php?action=formInscription">Sign in</a></li>
+            <?php else: ?>
+              <li><a class="dropdown-item" href="index.php?action=logout">Log out</a></li>
+            <?php endif; ?>
+          </ul>
+        </li>
+
       </ul>
     </div>
   </div>

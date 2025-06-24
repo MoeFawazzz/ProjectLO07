@@ -41,6 +41,19 @@ class Model
         $stmt = self::$pdo->prepare($sql);
         return $stmt->execute($params);
     }
-}
 
-?>
+    /**
+     * Renvoie la prochaine valeur d'id pour une table sans AUTO_INCREMENT
+     * @param string $table Nom de table
+     * @return int
+     */
+    protected static function getNextId(string $table): int
+    {
+        self::initPDO();
+        // Attention aux injections : table contrôlée dans le code
+        $sql = "SELECT MAX(id) AS maxid FROM {$table}";
+        $stmt = self::$pdo->query($sql);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return ((int)$row['maxid']) + 1;
+    }
+}
