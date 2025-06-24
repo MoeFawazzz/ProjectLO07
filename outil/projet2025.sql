@@ -173,3 +173,12 @@ insert into rdv values (32, 31, 102);
 -- PJ4
 insert into rdv values (41, 41, 110);
 
+--User Table
+CREATE TABLE IF NOT EXISTS user (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  username VARCHAR(40) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  email VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;

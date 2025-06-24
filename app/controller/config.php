@@ -12,13 +12,13 @@ if (!defined('DEBUG')) {
 $dsn = 'mysql:dbname=danguila;host=localhost;charset=utf8';
 $username = 'danguila';
 $password = 'Ly4m4lZ8';
-
+define('LOCAL', TRUE);
 if (!defined('LOCAL')) {
     define('LOCAL', FALSE); // TRUE pour lancer en local
    // define('LOCAL', FALSE); // False pour lancer sur devisi 
     
 } 
-
+                   
 if (LOCAL) {
     // Configuration de la base de données sur localhost
     $dsn = 'mysql:dbname=projet_lo07;host=localhost;charset=utf8';

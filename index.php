@@ -1,5 +1,6 @@
 <?php
 require_once 'app/view/fragment/fragmentMenu.php';
+require_once 'app/routeur/routeur.php'
 ?>
 
 <div class="text-center mt-5">

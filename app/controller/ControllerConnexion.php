@@ -9,31 +9,33 @@ class ControllerConnexion
         require 'app/view/connexion/formConnexion.php';
     }
 
-    public static function connect()
-    {
-        $login = $_POST['login'] ?? '';
-        $password = $_POST['password'] ?? '';
+  public static function connect()
+{
+    $login = $_POST['login'] ?? '';
+    $password = $_POST['password'] ?? '';
 
-        $user = ModelPersonne::getByLoginPassword($login, $password);
+    require_once 'app/model/ModelUser.php';
 
-        if ($user) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['login_id'] = $user['id'];
-            $_SESSION['login_nom'] = $user['nom'];
-            $_SESSION['login_prenom'] = $user['prenom'];
-            $_SESSION['role_responsable'] = $user['role_responsable'];
-            $_SESSION['role_examinateur'] = $user['role_examinateur'];
-            $_SESSION['role_etudiant'] = $user['role_etudiant'];
+    $user = ModelUser::getByLogin($login);
 
-            header('Location: index.php?controller=responsable&action=listProjets');
-            exit();
-        } else {
-            echo "<p>Erreur de connexion</p>";
-            self::formConnexion();
+    if ($user && password_verify($password, $user['password'])) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
+
+        // Optionally fetch more details from personne table if needed
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+
+        header('Location: index.php?controller=responsable&action=listProjets');
+        exit();
+    } else {
+        $message = "<p>Erreur de connexion : identifiants invalides.</p>";
+        require 'app/view/connexion/formConnexion.php';
     }
+}
+
 
 
     public static function logout()
@@ -47,8 +49,31 @@ class ControllerConnexion
         require 'app/view/connexion/formInscription.php';
     }
 
-    public static function register()
-    {
-        echo "<p>Inscription non encore implémentée.</p>";
+  public static function register()
+{
+    $nom = $_POST['nom'] ?? '';
+    $prenom = $_POST['prenom'] ?? '';
+    $login = $_POST['login'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $role = $_POST['role'] ?? '';
+
+    if (empty($nom) || empty($prenom) || empty($login) || empty($password) || empty($role)) {
+        $message = "All fields are required.";
+        require 'app/view/connexion/formInscription.php';
+        return;
     }
+
+    require_once 'app/model/ModelUser.php';
+
+    $result = ModelUser::registerUser($nom, $prenom, $login, $password, $role);
+
+    if ($result['success']) {
+        $message = "Registration successful! <a href='index.php?controller=connexion&action=formConnexion'>Login</a>";
+    } else {
+        $message = "Registration failed: " . htmlspecialchars($result['error']);
+    }
+
+    require 'app/view/connexion/formInscription.php';
+}
+
 }

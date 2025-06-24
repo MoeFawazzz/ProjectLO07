@@ -1,8 +1,8 @@
 <?php
-require_once 'app/controller/config.php';
+require_once 'app/controller/config.php'; // use correct path to config.php
 
 abstract class Model {
-    public static $pdo;
+    private static $pdo;
 
     public static function Init() {
         global $dsn, $username, $password;
@@ -16,6 +16,11 @@ abstract class Model {
             die();
         }
     }
-}
 
-Model::Init();
+    public static function getPDO() {
+        if (!isset(self::$pdo)) {
+            self::Init();
+        }
+        return self::$pdo;
+    }
+}

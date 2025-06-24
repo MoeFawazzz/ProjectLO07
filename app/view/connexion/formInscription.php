@@ -2,7 +2,11 @@
 
 <h2 class="my-4">Inscription</h2>
 
-<form method="post" action="index.php?controller=connexion&action=inscription" class="mb-4">
+<?php if (!empty($message)): ?>
+    <div class="alert alert-info"><?php echo $message; ?></div>
+<?php endif; ?>
+
+<form method="post" action="index.php?controller=connexion&action=register" class="mb-4">
     <div class="mb-3">
         <label for="nom" class="form-label">Nom :</label>
         <input type="text" name="nom" id="nom" class="form-control" required>
