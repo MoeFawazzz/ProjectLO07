@@ -34,4 +34,4 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
     <button type="submit" class="btn btn-success">S'inscrire</button>
 </form>
 
-<?php require __DIR__ . '/../fragment/fragmentFooter.php'; ?>
+<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

@@ -5,10 +5,8 @@ require_once __DIR__ . '/../model/ModelPersonne.php';
 
 class ControllerResponsable
 {
-    // Vérifie que l'utilisateur est connecté et responsable
     private static function checkAuth()
     {
-        session_start();
         if (empty($_SESSION['login_id']) || !$_SESSION['role_responsable']) {
             header('Location: index.php?action=formConnexion');
             exit();
@@ -35,7 +33,6 @@ class ControllerResponsable
         $groupe = intval($_POST['groupe'] ?? 0);
 
         if ($label === '' || $groupe < 1 || $groupe > 5) {
-            session_start();
             $_SESSION['error_message'] = 'Données invalides pour le projet.';
             header('Location: index.php?action=formAjoutProjet');
             exit();
@@ -66,13 +63,18 @@ class ControllerResponsable
         $prenom = trim($_POST['prenom'] ?? '');
 
         if ($nom === '' || $prenom === '') {
-            session_start();
             $_SESSION['error_message'] = 'Données invalides pour l\'examinateur.';
             header('Location: index.php?action=formAjoutExaminateur');
             exit();
         }
 
-        ModelPersonne::insertPersonne($nom, $prenom, uniqid(), md5(uniqid()), 'examinateur');
+        ModelPersonne::insertPersonne(
+            $nom,
+            $prenom,
+            uniqid(),            // login unique
+            substr(md5(uniqid()), 0, 20), // password tronqué à 20 caractères
+            'examinateur'
+        );
         header('Location: index.php?action=listExaminateurs');
         exit();
     }

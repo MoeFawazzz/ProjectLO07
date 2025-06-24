@@ -1,6 +1,8 @@
 <?php
 // app/view/responsable/planningProjet.php
-require __DIR__ . '/../../view/fragment/fragmentMenu.php';
+require __DIR__ . '/../fragment/fragmentHeader.html';
+require __DIR__ . '/../fragment/fragmentJumbotron.html';
+require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 <div class="container mt-5 pt-5">
   <h2>Planning du projet</h2>
@@ -22,4 +24,4 @@ require __DIR__ . '/../../view/fragment/fragmentMenu.php';
   <?php endif; ?>
 </div>
 
-<?php require __DIR__ . '/../fragment/fragmentFooter.php'; ?>
+<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navMenu">
       <ul class="navbar-nav me-auto ms-3">
         <li class="nav-item">
-          <span class="navbar-text text-white">DANGUILLAUME / FAWAZ</span>
+          <span class="navbar-text text-white"></span>
         </li>
         <?php if (isset($_SESSION['login_id'])): ?>
           <li class="nav-item ms-3">

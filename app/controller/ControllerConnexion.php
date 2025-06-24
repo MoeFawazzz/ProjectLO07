@@ -42,7 +42,6 @@ class ControllerConnexion
 
     public static function register()
     {
-        session_start();
         $nom      = trim($_POST['nom']      ?? '');
         $prenom   = trim($_POST['prenom']   ?? '');
         $login    = trim($_POST['login']    ?? '');
@@ -72,7 +71,6 @@ class ControllerConnexion
 
     public static function logout()
     {
-        session_start();
         session_destroy();
         header('Location: index.php?action=index');
         exit();
