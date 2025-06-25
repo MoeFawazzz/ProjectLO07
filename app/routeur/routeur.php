@@ -124,4 +124,9 @@ case 'deleteCreneau':
         http_response_code(404);
         echo "Erreur 404 : action « {$action} » inconnue.";
         break;
+
+    // Innovations
+     case 'proposeMVC':
+        ControllerInnovation::proposeMVC();
+        break;
 }
