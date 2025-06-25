@@ -1,13 +1,17 @@
 <?php
 
 $action = $_GET['action'] ?? 'index';
+$controller = $_GET['controller'] ?? '';
 
 require_once __DIR__ . '/../controller/ControllerConnexion.php';
 require_once __DIR__ . '/../controller/ControllerResponsable.php';
 require_once __DIR__ . '/../controller/ControllerRdv.php';
+require_once __DIR__ . '/../controller/ControllerExaminateur.php';
 
 switch ($action) {
+    // ------------------------
     // Connexion & Inscription
+    // ------------------------
     case 'index':
         ControllerConnexion::index();
         break;
@@ -27,7 +31,9 @@ switch ($action) {
         ControllerConnexion::register();
         break;
 
+    // ------------------------
     // Responsable
+    // ------------------------
     case 'listProjets':
         ControllerResponsable::listProjets();
         break;
@@ -53,7 +59,45 @@ switch ($action) {
         ControllerResponsable::planningProjet();
         break;
 
+    // ------------------------
+    // Examinateur
+    // ------------------------
+    case 'planning':
+        ControllerExaminateur::planning();
+        break;
+case 'listProjetsExam':
+    ControllerExaminateur::listProjetsExam();
+    break;
+    case 'listExaminateursProjet':
+        ControllerExaminateur::listExaminateursProjet();
+        break;
+    case 'planningProjet':
+        ControllerExaminateur::planningProjet();
+        break;
+    case 'formSelectProjetCreneaux':
+    ControllerExaminateur::formSelectProjetCreneaux();
+        break;
+    case 'creneauxProjet':
+    ControllerExaminateur::creneauxProjet();
+        break;
+case 'formAjoutCreneau':
+    ControllerExaminateur::formAjoutCreneau();
+    break;
+
+case 'ajoutCreneau':
+    ControllerExaminateur::ajoutCreneau();
+    break;
+
+ case 'formAjoutCreneauxConsecutifs':
+    ControllerExaminateur::formAjoutCreneauxConsecutifs();
+    break;
+
+case 'ajoutCreneauxConsecutifs':
+    ControllerExaminateur::ajoutCreneauxConsecutifs();
+    break;
+    // ------------------------
     // RDV
+    // ------------------------
     case 'listRdvs':
         ControllerRdv::listRdvs();
         break;
@@ -61,6 +105,9 @@ switch ($action) {
         ControllerRdv::detailRdv();
         break;
 
+    // ------------------------
+    // Default
+    // ------------------------
     default:
         http_response_code(404);
         echo "Erreur 404 : action « {$action} » inconnue.";

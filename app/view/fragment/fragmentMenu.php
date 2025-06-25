@@ -36,11 +36,13 @@ $loggedIn = !empty($_SESSION['login_id']);
             Examinateur
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="index.php?action=listProjets">Liste des projets</a></li>
-            <li><a class="dropdown-item" href="index.php?action=listMesCreneaux">Liste complète de mes créneaux</a></li>
-            <li><a class="dropdown-item" href="index.php?action=listCreneauxProjet">Liste de mes créneaux pour un projet</a></li>
-            <li><a class="dropdown-item" href="index.php?action=formAjoutCreneau">Ajouter un créneau à un projet</a></li>
-            <li><a class="dropdown-item" href="index.php?action=formAjoutCreneauxConsecutifs">Ajouter des créneaux consécutifs</a></li>
+            <li><a class="dropdown-item" href="index.php?controller=examinateur&action=listProjetsExam">Liste des projets</a></li>
+           <li><a class="dropdown-item" href="index.php?controller=examinateur&action=planning">Liste complète de mes créneaux</a></li>
+           <li><a class="dropdown-item" href="index.php?controller=examinateur&action=formSelectProjetCreneaux">Liste de mes créneaux pour un projet</a></li>
+           <li><a class="dropdown-item" href="index.php?controller=examinateur&action=formAjoutCreneau">Ajouter un créneau à un projet</a></li>
+           <li><a class="dropdown-item" href="index.php?controller=examinateur&action=formAjoutCreneauxConsecutifs">Ajouter des créneaux consécutifs</a></li>
+
+
           </ul>
         </li>
         <?php endif; ?>

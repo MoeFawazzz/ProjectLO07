@@ -74,4 +74,52 @@ class ModelProjet extends Model
         ";
         return self::selectAll($sql, ['p' => $projetId]);
     }
+
+public static function getPlanningByExaminateur(int $idExaminateur): array {
+    $sql = "SELECT CR.id as creneau_id, PJ.label as projet_label, CR.creneau
+            FROM creneau CR
+            JOIN projet PJ ON CR.projet = PJ.id
+            WHERE CR.examinateur = :id
+            ORDER BY CR.creneau ASC";
+
+    return self::selectAll($sql, ['id' => $idExaminateur]);
 }
+
+public static function getProjetsByExaminateur(int $examinateurId): array
+{
+    $sql = "SELECT DISTINCT PJ.id, PJ.label, PJ.groupe
+            FROM creneau CR
+            JOIN projet PJ ON CR.projet = PJ.id
+            WHERE CR.examinateur = :id";
+
+    return self::selectAll($sql, ['id' => $examinateurId]);
+}
+
+public static function getCreneauxByProjet(int $projetId): array
+{
+    $sql = "SELECT CR.creneau, ET.prenom AS etudiant_prenom, ET.nom AS etudiant_nom
+            FROM creneau CR
+            LEFT JOIN rdv R ON R.creneau = CR.id
+            LEFT JOIN personne ET ON R.etudiant = ET.id
+            WHERE CR.projet = :id
+            ORDER BY CR.creneau ASC";
+
+    return self::selectAll($sql, ['id' => $projetId]);
+}
+
+public static function getCreneauxByExaminateur(int $idExaminateur): array {
+    $sql = "SELECT CR.id AS creneau_id, PJ.label, CR.creneau, 
+                   ET.nom AS etudiant_nom, ET.prenom AS etudiant_prenom
+            FROM creneau CR
+            JOIN projet PJ ON CR.projet = PJ.id
+            LEFT JOIN rdv R ON CR.id = R.creneau
+            LEFT JOIN personne ET ON R.etudiant = ET.id
+            WHERE CR.examinateur = :idExaminateur
+            ORDER BY CR.creneau";
+
+    return self::selectAll($sql, ['idExaminateur' => $idExaminateur]);
+}
+
+
+}
+
