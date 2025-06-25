@@ -8,15 +8,22 @@ class ControllerConnexion
 {
     /** Page d’accueil (avant ou après connexion) */
     public static function index()
-    {
-        // Si non connecté, afficher la page de connexion
-        if (empty($_SESSION['login_id'])) {
-            self::formConnexion();
-        } else {
-            // sinon, rediriger vers la liste des RDV par défaut
-            ControllerRdv::listRdvs();
-        }
+{
+    // utilisateur non connecté → formulaire
+    if (empty($_SESSION['login_id'])) {
+        self::formConnexion();
+        return;
     }
+
+    // étudiant connecté → ses RDV seulement
+    if (!empty($_SESSION['role_etudiant'])) {
+        ControllerRdv::listMesRdvs();
+        return;
+    }
+
+    // sinon (responsable ou examinateur) → tous les RDV
+    ControllerRdv::listRdvs();
+}
 
     /** Formulaire de connexion */
     public static function formConnexion()
