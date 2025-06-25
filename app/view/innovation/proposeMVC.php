@@ -48,13 +48,23 @@ class View
     public static function render(string $name, array $params = [])
     {
         extract($params, EXTR_SKIP);
+
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+
         require __DIR__ . '/../view/fragment/fragmentHeader.html';
         require __DIR__ . '/../view/fragment/fragmentJumbotron.html';
         require __DIR__ . '/../view/fragment/fragmentMenu.php';
-        require __DIR__ . '/../view/' . $name . '.php';
+
+        $file = __DIR__ . '/../view/' . $name . '.php';
+        if (!is_file($file)) {
+            http_response_code(500);
+            echo "Vue introuvable : $name";
+            exit();
+        }
+
+        require $file;
         require __DIR__ . '/../view/fragment/fragmentFooter.html';
     }
 }
