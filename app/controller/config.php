@@ -1,48 +1,31 @@
-
-<!-- ----- debut config -->
 <?php
 
-// Utile pour le débugage car c'est un interrupteur pour les echos et print_r.
 if (!defined('DEBUG')) {
-    define('DEBUG', FALSE);
+    define('DEBUG', TRUE); // Turn to FALSE in production
 }
 
-// ===============
-// Configuration de la base de données sur dev-isi////"dev-isi.utt.fr"
-
-define('DB_DSN',  'mysql:dbname=danguila;host=localhost;charset=utf8');
-define('DB_USER', 'danguila');
-define('DB_PASS', 'Ly4m4lZ8');
-
-if (!defined('LOCAL')) {
-    define('LOCAL', FALSE); // TRUE pour lancer en local
-   // define('LOCAL', FALSE); // False pour lancer sur devisi 
-    
-} 
+// --- Define environment
+define('LOCAL', FALSE); // Set to FALSE if you want to work on dev-isi
 
 if (LOCAL) {
-    // Configuration de la base de données sur localhost
-    $dsn = 'mysql:dbname=projet_lo07;host=localhost;charset=utf8';
-    $username = 'root';
-    $password = '';
+    define('DB_DSN', 'mysql:dbname=projet_lo07;host=localhost;charset=utf8');
+    define('DB_USER', 'root');
+    define('DB_PASS', '');
+} else {
+    define('DB_DSN', 'mysql:dbname=danguila;host=localhost;charset=utf8');
+    define('DB_USER', 'danguila');
+    define('DB_PASS', 'Ly4m4lZ8');
 }
- 
+
 // chemin absolu vers le répertoire du projet SUR DEV-ISI 
 $root = dirname(dirname(__DIR__)) . "/";
 
-
 if (DEBUG) {
- echo ("<ul>");
- echo (" <li>dsn = $dsn</li>");
- echo (" <li>username = $username</li>");
- echo (" <li>password = $password</li>");
- echo ("<li>---</li>");
- echo (" <li>root = $root</li>");
-
- echo ("</ul>");
+    // echo ("<ul>");
+    // echo ("<li>dsn = " . DB_DSN . "</li>");
+    // echo ("<li>username = " . DB_USER . "</li>");
+    // echo ("<li>password = " . DB_PASS . "</li>");
+    // echo ("<li>root = $root</li>");
+    // echo ("</ul>");
 }
 ?>
-
-<!-- ----- fin config -->
-
-

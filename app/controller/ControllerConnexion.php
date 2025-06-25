@@ -9,19 +9,26 @@ class ControllerConnexion
     /** Page d’accueil (avant ou après connexion) */
     public static function index()
     {
-        // Si non connecté, afficher la page de connexion
+        // utilisateur non connecté → formulaire
         if (empty($_SESSION['login_id'])) {
             self::formConnexion();
-        } else {
-            // sinon, rediriger vers la liste des RDV par défaut
-            ControllerRdv::listRdvs();
+            return;
         }
+
+        // étudiant connecté → ses RDV seulement
+        if (!empty($_SESSION['role_etudiant'])) {
+            ControllerRdv::listMesRdvs();
+            return;
+        }
+
+        // sinon (responsable ou examinateur) → tous les RDV
+        ControllerRdv::listRdvs();
     }
 
     /** Formulaire de connexion */
     public static function formConnexion()
     {
-        require __DIR__ . '/../view/connexion/formConnexion.php';
+        View::render('connexion/formConnexion');
     }
 
     /** Traitement du login */
@@ -54,40 +61,66 @@ class ControllerConnexion
     /** Déconnexion */
     public static function logout()
     {
+        // S'il n'y a pas déjà de session, on démarre
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        // On vide complètement la session
+        $_SESSION = [];
         session_destroy();
-        header('Location: index.php?action=index');
+
+        // Puis on redirige sur la page d'accueil « froide »
+        header('Location: index.php');
         exit();
     }
 
     /** Formulaire d’inscription */
     public static function formInscription()
     {
-        require __DIR__ . '/../view/connexion/formInscription.php';
+        View::render('connexion/formInscription');
     }
 
     /** Traitement de l’inscription */
     public static function register()
     {
-        $nom    = trim($_POST['nom']    ?? '');
-        $prenom = trim($_POST['prenom'] ?? '');
-        $login  = trim($_POST['login']  ?? '');
-        $pwd    = trim($_POST['password'] ?? '');
-        $role   = $_POST['role'] ?? '';
-        if ($nom === '' || $prenom === '' || $login === '' || $pwd === '' 
-            || !in_array($role, ['responsable','examinateur','etudiant'])) 
-        {
-            $_SESSION['error_message'] = 'Données d’inscription invalides.';
+        $nom     = trim($_POST['nom']     ?? '');
+        $prenom  = trim($_POST['prenom']  ?? '');
+        $login   = trim($_POST['login']   ?? '');
+        $pwd     = trim($_POST['password'] ?? '');
+        $roles   = $_POST['roles']        ?? [];  // un tableau de 0 à 3 rôles
+
+        // Validation : tous les champs + au moins un rôle
+        if (
+            $nom === '' || $prenom === '' ||
+            $login === '' || $pwd === '' ||
+            !is_array($roles) || empty($roles)
+        ) {
+            $_SESSION['error_message'] = 'Merci de remplir tous les champs et de choisir au moins un rôle.';
             header('Location: index.php?action=formInscription');
             exit();
         }
-        $pwd = substr($pwd, 0, 20);  // tronque à 20 chars
-        $ok = ModelPersonne::insertPersonne($nom, $prenom, $login, $pwd, $role);
+
+        if (ModelPersonne::getByLogin($login) !== false) {
+            $_SESSION['error_message'] = 'Ce login est déjà pris. Veuillez en choisir un autre.';
+            header('Location: index.php?action=formInscription');
+            exit();
+        }
+
+        // On tronque le mot de passe à 20 caractères pour tenir dans varchar(20)
+        $pwd = substr($pwd, 0, 20);
+
+
+        // On transmet le tableau des rôles au modèle
+        $ok = ModelPersonne::insertPersonne($nom, $prenom, $login, $pwd, $roles);
+
+
         if (!$ok) {
             $_SESSION['error_message'] = 'Impossible de créer l’utilisateur.';
             header('Location: index.php?action=formInscription');
             exit();
         }
-        $_SESSION['success_message'] = 'Inscription réussie, connectez-vous.';
+
+        $_SESSION['success_message'] = 'Inscription réussie, vous pouvez maintenant vous connecter.';
         header('Location: index.php?action=formConnexion');
         exit();
     }

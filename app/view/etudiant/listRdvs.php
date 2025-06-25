@@ -1,11 +1,9 @@
 <?php
 // app/view/rdv/listRdvs.php
-require __DIR__ . '/../fragment/fragmentHeader.html';
-require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 <div class="container mt-5 pt-5">
-  <h2>Liste des rendez-vous</h2>
+  <h2>Liste des rendez-vous de <?= htmlspecialchars($nomEtudiant ?? '...') ?></h2>
+
   <?php if (empty($rdvs)): ?>
     <div class="alert alert-info">Aucun rendez-vous trouvé.</div>
   <?php else: ?>
@@ -46,4 +44,3 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
     </table>
   <?php endif; ?>
 </div>
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

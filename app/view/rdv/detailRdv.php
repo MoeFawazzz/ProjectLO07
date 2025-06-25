@@ -1,8 +1,5 @@
 <?php
 // app/view/rdv/detailRdv.php
-require __DIR__ . '/../fragment/fragmentHeader.html';
-require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 <div class="container mt-5 pt-5">
   <?php if (empty($rdv)): ?>
@@ -20,4 +17,3 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
     <a href="index.php?action=listRdvs" class="btn btn-secondary mt-3">Retour</a>
   <?php endif; ?>
 </div>
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

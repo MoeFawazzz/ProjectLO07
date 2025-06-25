@@ -11,7 +11,7 @@ class ControllerRdv
     {
         // (si vous avez besoin d'auth, insérez checkAuth() ici)
         $rdvs = ModelRdv::getAll();
-        require __DIR__ . '/../view/rdv/listRdvs.php';
+        View::render('etudiant/listRdvs', ['rdvs' => $rdvs]);
     }
 
     /**
@@ -22,10 +22,27 @@ class ControllerRdv
         $id = intval($_GET['id'] ?? 0);
         if ($id > 0) {
             $rdv = ModelRdv::getById($id);
-            require __DIR__ . '/../view/rdv/detailRdv.php';
+            View::render('rdv/detailRdv', ['rdv' => $rdv]);
         } else {
             header('Location: index.php?action=listRdvs');
             exit();
         }
+    }
+    public static function listMesRdvs()
+    {
+        // Vérifier la session / rôle étudiant
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (empty($_SESSION['login_id']) || !$_SESSION['role_etudiant']) {
+            header('Location: index.php?action=formConnexion');
+            exit();
+        }
+
+        // Récupère les RDV filtrés
+        $etudiantId = (int)$_SESSION['login_id'];
+        $rdvs       = ModelRdv::getRdvsByEtudiant($etudiantId);
+
+        View::render('etudiant/listRdvs', ['rdvs' => $rdvs]);
     }
 }
