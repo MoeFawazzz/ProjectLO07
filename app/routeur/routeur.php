@@ -95,6 +95,18 @@ case 'ajoutCreneau':
 case 'ajoutCreneauxConsecutifs':
     ControllerExaminateur::ajoutCreneauxConsecutifs();
     break;
+    case 'formEditCreneau':
+    ControllerExaminateur::formEditCreneau();
+    break;
+
+case 'editCreneau':
+    ControllerExaminateur::editCreneau();
+    break;
+
+case 'deleteCreneau':
+    ControllerExaminateur::deleteCreneau();
+    break;
+
     // ------------------------
     // RDV
     // ------------------------

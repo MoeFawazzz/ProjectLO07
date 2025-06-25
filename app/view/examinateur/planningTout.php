@@ -18,6 +18,8 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
                     <th>Projet</th>
                     <th>Date et heure</th>
                     <th>Étudiant assigné</th>
+                    <th>Modifier</th>
+                    <th>Supprimer</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +35,16 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
                                 <em>Non attribué</em>
                             <?php endif; ?>
                         </td>
+                        <td><a href="index.php?controller=examinateur&action=formEditCreneau&id=<?= $c['creneau_id'] ?>" class="btn btn-sm btn-outline-secondary">
+    Modifier
+</a>
+</td>
+                        <td>  <a href="index.php?controller=examinateur&action=deleteCreneau&id=<?= $c['creneau_id'] ?>" 
+       class="btn btn-sm btn-outline-danger"
+       onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce créneau ?');">
+        Supprimer
+    </a>
+</td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
