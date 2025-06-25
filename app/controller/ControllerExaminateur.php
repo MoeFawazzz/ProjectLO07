@@ -232,7 +232,13 @@ public static function editCreneau()
             $etudiantId = (int)$_POST['etudiant_id'];
             ModelExaminateur::assignEtudiantToCreneau($id, $etudiantId);
         }
+$etudiantId = !empty($_POST['etudiant_id']) ? (int)$_POST['etudiant_id'] : null;
 
+if ($etudiantId) {
+    $messageNotif = "Votre rendez-vous a été modifié. Nouvelle date : " . $datetime;
+    require_once __DIR__ . '/../model/ModelNotification.php';
+    ModelNotification::create($etudiantId, $messageNotif);
+}
         $message = $success ? "Créneau modifié avec succès." : "Erreur lors de la modification.";
         View::render('examinateur/message', ['message' => $message]);
     } else {
@@ -262,16 +268,29 @@ public static function deleteCreneau()
 
     if (!empty($_GET['id'])) {
         $id = (int)$_GET['id'];
+
+        $sql = "SELECT etudiant FROM rdv WHERE creneau = :id";
+        $result = Model::selectOne($sql, ['id' => $id]);
+
+        $etudiantId = $result ? $result['etudiant'] : null;
+
         $success = ModelExaminateur::deleteCreneauById($id);
+
+        if ($success && $etudiantId) {
+            require_once __DIR__ . '/../model/ModelNotification.php';
+            $messageNotif = "Votre rendez-vous a été annulé par l'examinateur.";
+            ModelNotification::create($etudiantId, $messageNotif);
+        }
 
         $message = $success 
             ? "Créneau supprimé avec succès." 
             : "Erreur lors de la suppression du créneau.";
-        
+
         View::render('examinateur/message', ['message' => $message]);
     } else {
         View::render('examinateur/message', ['message' => "ID manquant."]);
     }
 }
+
 
 }

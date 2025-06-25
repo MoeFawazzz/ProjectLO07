@@ -3,6 +3,7 @@
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
+require_once __DIR__ . '/../../model/ModelNotification.php';
 $loggedIn = !empty($_SESSION['login_id']);
 $prenom   = $_SESSION['login_prenom'] ?? '';
 $nom      = $_SESSION['login_nom']    ?? '';
@@ -95,8 +96,24 @@ $nom      = $_SESSION['login_nom']    ?? '';
             <?php endif; ?>
           </ul>
         </li>
+<?php if ($loggedIn && $_SESSION['role_etudiant']): ?>
+    <?php
+        $notifCount = ModelNotification::countUnreadByEtudiant((int)$_SESSION['login_id']);
+    ?>
+    <li class="nav-item">
+        <a class="nav-link text-white" href="index.php?controller=notification&action=listNotifications">
+             Notifications
+            <?php if ($notifCount > 0): ?>
+                <span class="badge bg-danger"><?= $notifCount ?></span>
+            <?php endif; ?>
+        </a>
+    </li>
+<?php endif; ?>
+
+
 
       </ul>
+
     </div>
   </div>
 </nav>

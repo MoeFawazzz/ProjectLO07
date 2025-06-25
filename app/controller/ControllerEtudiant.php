@@ -58,6 +58,14 @@ public static function listRdvs()
         'nomEtudiant' => $nomComplet
     ]);
 }
+public static function notifications()
+{
+    self::checkAuth();
+    $id = $_SESSION['login_id'];
+    ModelNotification::markAllAsRead($id);
+    $notifications = ModelNotification::getAllByEtudiant($id);
+    View::render('etudiant/notifications', ['notifications' => $notifications]);
+}
 
 
 

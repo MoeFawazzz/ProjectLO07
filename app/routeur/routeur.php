@@ -9,6 +9,8 @@ require_once __DIR__ . '/../controller/ControllerRdv.php';
 require_once __DIR__ . '/../controller/ControllerExaminateur.php';
 require_once __DIR__ . '/../controller/ControllerInnovation.php';
 require_once 'app/controller/ControllerEtudiant.php';
+require_once __DIR__ . '/../controller/ControllerNotification.php';
+
 switch ($action) {
     // ------------------------
     // Connexion & Inscription
@@ -143,6 +145,13 @@ case 'etudiant':
         ControllerRdv::detailRdv();
         break;
 
+        case 'listNotifications':
+    ControllerNotification::listNotifications();
+    break;
+
+    case 'delete':
+    ControllerNotification::delete();
+    break;
     // ------------------------
     // Default
     // ------------------------
