@@ -4,13 +4,25 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 $loggedIn = !empty($_SESSION['login_id']);
+$prenom   = $_SESSION['login_prenom'] ?? '';
+$nom      = $_SESSION['login_nom']    ?? '';
 ?>
 <nav class="navbar navbar-expand-lg bg-success fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand text-white" href="index.php?action=index">LO07 Soutenances</a>
+    <a class="navbar-brand text-white" href="index.php?action=index">
+      DANGUILLAUME-FAWAZ
+    </a>
+
+    <?php if ($loggedIn): ?>
+      <span class="navbar-text text-white ms-3">
+        <?= htmlspecialchars($prenom . ' ' . $nom) ?>
+      </span>
+    <?php endif; ?>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navMenu">
       <ul class="navbar-nav me-auto">
 
