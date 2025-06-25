@@ -42,7 +42,7 @@ public static function planning()
         $exs = ModelProjet::getExaminateursByProjet($id);
         require __DIR__ . '/../view/examinateur/listExaminateursProjet.php';
     } else {
-        $prs = ModelProjet::getProjetsByExaminateur((int)$_SESSION['login_id']); // ✅ modifié ici
+        $prs = ModelProjet::getProjetsByExaminateur((int)$_SESSION['login_id']); 
         $action = 'index.php?controller=examinateur&action=listExaminateursProjet';
         require __DIR__ . '/../view/examinateur/formSelectProjet.php';
     }
@@ -60,7 +60,7 @@ public static function planning()
         $rvs = ModelProjet::getPlanningByProjet($id);
         require __DIR__ . '/../view/examinateur/planningProjet.php';
     } else {
-        $prs = ModelProjet::getProjetsByExaminateur((int)$_SESSION['login_id']); // ✅ modifié ici
+        $prs = ModelProjet::getProjetsByExaminateur((int)$_SESSION['login_id']); 
         $action = 'index.php?controller=examinateur&action=planningProjet';
         require __DIR__ . '/../view/examinateur/formSelectProjet.php';
     }
@@ -69,7 +69,7 @@ public static function planning()
 public static function formSelectProjetCreneaux()
 {
     self::checkAuth();
-    $prs = ModelProjet::getProjetsByExaminateur((int)$_SESSION['login_id']); // ✅ modifié ici
+    $prs = ModelProjet::getProjetsByExaminateur((int)$_SESSION['login_id']); 
     $action = 'index.php?controller=examinateur&action=creneauxProjet';
     require __DIR__ . '/../view/examinateur/formSelectProjet.php';
 }
@@ -102,7 +102,7 @@ public static function formAjoutCreneau()
 {
     self::checkAuth();
     $idExaminateur = (int)$_SESSION['login_id'];
-    $prs = ModelProjet::getProjetsByExaminateur($idExaminateur); // ✅ modifié ici
+    $prs = ModelProjet::getProjetsByExaminateur($idExaminateur); 
     $action = 'index.php?controller=examinateur&action=ajoutCreneau';
     require __DIR__ . '/../view/examinateur/formAjoutCreneau.php';
 }
@@ -135,7 +135,7 @@ public static function formAjoutCreneauxConsecutifs()
 {
     self::checkAuth();
     $idExam = (int)$_SESSION['login_id'];
-    $projets = ModelProjet::getProjetsByExaminateur($idExam); // ✅ modifié ici
+    $projets = ModelProjet::getProjetsByExaminateur($idExam); 
     require __DIR__ . '/../view/examinateur/formAjoutCreneauxConsecutifs.php';
 }
 
