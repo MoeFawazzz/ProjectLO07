@@ -1,5 +1,3 @@
-<!--  -->
-
 <div class="container mt-5">
     <h2>Modifier un créneau</h2>
     <p><strong>Projet :</strong> <?= htmlspecialchars($creneau['projet_label']) ?></p>

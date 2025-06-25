@@ -24,4 +24,20 @@ class ModelRdv extends Model
         $sql = "SELECT * FROM infordv WHERE rdv_id = :id";
         return self::selectOne($sql, ['id' => $id]);
     }
+
+    /**
+     * Récupère la liste des RDV pour un étudiant donné
+     *
+     * @param int $etudiantId
+     * @return array
+     */
+    public static function getRdvsByEtudiant(int $etudiantId): array
+    {
+        // Utilise la vue SQL infordv pour ne pas répéter les JOIN
+        $sql = "SELECT * 
+            FROM infordv 
+            WHERE etudiant_id = :eid 
+            ORDER BY creneau";
+        return self::selectAll($sql, ['eid' => $etudiantId]);
+    }
 }

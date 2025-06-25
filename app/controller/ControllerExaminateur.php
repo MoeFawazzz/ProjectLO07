@@ -187,20 +187,27 @@ public static function ajoutCreneauxConsecutifs()
 public static function formEditCreneau()
 {
     self::checkAuth();
+
     if (!empty($_GET['id'])) {
         $id = (int)$_GET['id'];
         $creneau = ModelExaminateur::getCreneauById($id);
         $etudiants = ModelPersonne::getAllEtudiants();
+
         if ($creneau) {
             $action = "index.php?controller=examinateur&action=editCreneau&id=$id";
-            require __DIR__ . '/../view/examinateur/formEditCreneau.php';
+            View::render('examinateur/formEditCreneau', [
+                'creneau' => $creneau,
+                'etudiants' => $etudiants,
+                'action' => $action
+            ]);
         } else {
-            echo "Créneau introuvable.";
+            View::render('examinateur/message', ['message' => "Créneau introuvable."]);
         }
     } else {
-        echo "ID manquant.";
+        View::render('examinateur/message', ['message' => "ID manquant."]);
     }
 }
+
 
 
 
@@ -261,9 +268,9 @@ public static function deleteCreneau()
             ? "Créneau supprimé avec succès." 
             : "Erreur lors de la suppression du créneau.";
         
-        require __DIR__ . '/../view/examinateur/message.php';
+        View::render('examinateur/message', ['message' => $message]);
     } else {
-        echo "ID manquant.";
+        View::render('examinateur/message', ['message' => "ID manquant."]);
     }
 }
 

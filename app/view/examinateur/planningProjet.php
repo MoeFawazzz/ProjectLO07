@@ -1,9 +1,4 @@
 <!-- app/view/examinateur/planningProjet.php -->
-<?php
-// require __DIR__ . '/../fragment/fragmentHeader.html';
-// require __DIR__ . '/../fragment/fragmentJumbotron.html';
-// require __DIR__ . '/../fragment/fragmentMenu.php';
-?>
 
 <div class="container mt-5">
     <h2>Planning du projet: <?= htmlspecialchars($proj['label']) ?></h2>
@@ -31,4 +26,3 @@
         </table>
     <?php endif; ?>
 </div>
-

@@ -1,9 +1,4 @@
 <!-- app/view/examinateur/formSelectProjet.php -->
-<?php
-// require __DIR__ . '/../fragment/fragmentHeader.html';
-// require __DIR__ . '/../fragment/fragmentJumbotron.html';
-// require __DIR__ . '/../fragment/fragmentMenu.php';
-?>
 
 <div class="container mt-5">
     <h2>Sélectionner un projet</h2>
@@ -21,4 +16,3 @@
         <button type="submit" class="btn btn-primary">Voir</button>
     </form>
 </div>
-

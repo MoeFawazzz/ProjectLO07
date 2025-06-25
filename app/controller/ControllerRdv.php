@@ -28,4 +28,21 @@ class ControllerRdv
             exit();
         }
     }
+    public static function listMesRdvs()
+    {
+        // Vérifier la session / rôle étudiant
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (empty($_SESSION['login_id']) || !$_SESSION['role_etudiant']) {
+            header('Location: index.php?action=formConnexion');
+            exit();
+        }
+
+        // Récupère les RDV filtrés
+        $etudiantId = (int)$_SESSION['login_id'];
+        $rdvs       = ModelRdv::getRdvsByEtudiant($etudiantId);
+
+        View::render('etudiant/listRdvs', ['rdvs' => $rdvs]);
+    }
 }

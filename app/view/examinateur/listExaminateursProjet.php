@@ -1,9 +1,4 @@
 <!-- app/view/examinateur/listExaminateursProjet.php -->
-<?php
-// require __DIR__ . '/../fragment/fragmentHeader.html';
-// require __DIR__ . '/../fragment/fragmentJumbotron.html';
-// require __DIR__ . '/../fragment/fragmentMenu.php';
-// ?>
 
 <div class="container mt-5">
     <h2>Examinateurs affectés à ce projet</h2>
