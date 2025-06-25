@@ -1,7 +1,7 @@
 <?php
 // app/view/fragment/fragmentMenu.php
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+  session_start();
 }
 $loggedIn = !empty($_SESSION['login_id']);
 $prenom   = $_SESSION['login_prenom'] ?? '';
@@ -27,46 +27,46 @@ $nom      = $_SESSION['login_nom']    ?? '';
       <ul class="navbar-nav me-auto">
 
         <?php if ($loggedIn && $_SESSION['role_responsable']): ?>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
-            Responsable
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="index.php?action=listProjets">Liste des projets</a></li>
-            <li><a class="dropdown-item" href="index.php?action=formAjoutProjet">Ajout d'un projet</a></li>
-            <li><a class="dropdown-item" href="index.php?action=listExaminateurs">Liste des examinateurs</a></li>
-            <li><a class="dropdown-item" href="index.php?action=formAjoutExaminateur">Ajout d'un examinateur</a></li>
-            <li><a class="dropdown-item" href="index.php?action=listExaminateursProjet">Liste des examinateurs d'un projet</a></li>
-            <li><a class="dropdown-item" href="index.php?action=planningProjet">Planning d'un projet</a></li>
-          </ul>
-        </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+              Responsable
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="index.php?action=listProjets">Liste des projets</a></li>
+              <li><a class="dropdown-item" href="index.php?action=formAjoutProjet">Ajout d'un projet</a></li>
+              <li><a class="dropdown-item" href="index.php?action=listExaminateurs">Liste des examinateurs</a></li>
+              <li><a class="dropdown-item" href="index.php?action=formAjoutExaminateur">Ajout d'un examinateur</a></li>
+              <li><a class="dropdown-item" href="index.php?action=listExaminateursProjet">Liste des examinateurs d'un projet</a></li>
+              <li><a class="dropdown-item" href="index.php?action=planningProjet">Planning d'un projet</a></li>
+            </ul>
+          </li>
         <?php endif; ?>
 
         <?php if ($loggedIn && $_SESSION['role_examinateur']): ?>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
-            Examinateur
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="index.php?action=listProjets">Liste des projets</a></li>
-            <li><a class="dropdown-item" href="index.php?action=listMesCreneaux">Liste complète de mes créneaux</a></li>
-            <li><a class="dropdown-item" href="index.php?action=listCreneauxProjet">Liste de mes créneaux pour un projet</a></li>
-            <li><a class="dropdown-item" href="index.php?action=formAjoutCreneau">Ajouter un créneau à un projet</a></li>
-            <li><a class="dropdown-item" href="index.php?action=formAjoutCreneauxConsecutifs">Ajouter des créneaux consécutifs</a></li>
-          </ul>
-        </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+              Examinateur
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="index.php?action=listProjets">Liste des projets</a></li>
+              <li><a class="dropdown-item" href="index.php?action=listMesCreneaux">Liste complète de mes créneaux</a></li>
+              <li><a class="dropdown-item" href="index.php?action=listCreneauxProjet">Liste de mes créneaux pour un projet</a></li>
+              <li><a class="dropdown-item" href="index.php?action=formAjoutCreneau">Ajouter un créneau à un projet</a></li>
+              <li><a class="dropdown-item" href="index.php?action=formAjoutCreneauxConsecutifs">Ajouter des créneaux consécutifs</a></li>
+            </ul>
+          </li>
         <?php endif; ?>
 
         <?php if ($loggedIn && $_SESSION['role_etudiant']): ?>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
-            Étudiant
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="index.php?action=listRdvs">Liste de mes RDV</a></li>
-            <li><a class="dropdown-item" href="index.php?action=formPrendreRdv">Prendre un RDV pour un projet</a></li>
-          </ul>
-        </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+              Étudiant
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="index.php?action=listRdvs">Liste de mes RDV</a></li>
+              <li><a class="dropdown-item" href="index.php?action=formPrendreRdv">Prendre un RDV pour un projet</a></li>
+            </ul>
+          </li>
         <?php endif; ?>
 
         <li class="nav-item dropdown">

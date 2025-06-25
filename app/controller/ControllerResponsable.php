@@ -62,25 +62,34 @@ class ControllerResponsable
 
     // 7) TRAITEMENT AJOUT EXAMINATEUR
     public static function ajoutExaminateur()
-    {
-        self::checkAuth();
-        $nom    = trim($_POST['nom']    ?? '');
-        $prenom = trim($_POST['prenom'] ?? '');
-        if ($nom === '' || $prenom === '') {
-            $_SESSION['error_message'] = 'Données invalides pour l’examinateur.';
-            header('Location: index.php?action=formAjoutExaminateur');
-            exit();
-        }
-        ModelPersonne::insertPersonne(
-            $nom,
-            $prenom,
-            uniqid('', true),
-            substr(md5(uniqid()), 0, 20),
-            'examinateur'
-        );
-        header('Location: index.php?action=listExaminateurs');
+{
+    self::checkAuth();
+    $nom    = trim($_POST['nom']    ?? '');
+    $prenom = trim($_POST['prenom'] ?? '');
+
+    if ($nom === '' || $prenom === '') {
+        $_SESSION['error_message'] = 'Données invalides pour l\'examinateur.';
+        header('Location: index.php?action=formAjoutExaminateur');
         exit();
     }
+
+    // 1) Génération tronquée pour coller au varchar(20)
+    $login    = substr(uniqid(), 0, 15);
+    $password = substr(md5(uniqid()), 0, 20);
+
+    // 2) Insertion en base
+    ModelPersonne::insertPersonne($nom, $prenom, $login, $password, 'examinateur');
+
+    // 3) Message de confirmation (facultatif)
+    $_SESSION['success_message'] =
+        "Examinateur créé !<br>"
+      . "Login : <strong>$login</strong><br>"
+      . "Mot de passe : <strong>$password</strong>";
+
+    header('Location: index.php?action=listExaminateurs');
+    exit();
+}
+
 
     // 8) LISTE DES EXAMINATEURS D’UN PROJET
     public static function listExaminateursProjet()

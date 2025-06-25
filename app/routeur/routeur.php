@@ -68,7 +68,10 @@ switch ($action) {
         break;
 
     // Innovations
-     case 'proposeMVC':
+    case 'proposeFeature':
+        ControllerInnovation::proposeFeature();
+        break;
+    case 'proposeMVC':
         ControllerInnovation::proposeMVC();
         break;
 }

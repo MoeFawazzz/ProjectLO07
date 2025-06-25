@@ -53,11 +53,19 @@ class ControllerConnexion
 
     /** Déconnexion */
     public static function logout()
-    {
-        session_destroy();
-        header('Location: index.php?action=index');
-        exit();
+{
+    // S'il n'y a pas déjà de session, on démarre
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
+    // On vide complètement la session
+    $_SESSION = [];
+    session_destroy();
+
+    // Puis on redirige sur la page d'accueil « froide »
+    header('Location: index.php');
+    exit();
+}
 
     /** Formulaire d’inscription */
     public static function formInscription()
