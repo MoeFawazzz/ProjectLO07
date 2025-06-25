@@ -1,5 +1,4 @@
-<?php require __DIR__ . '/../fragment/fragmentHeader.html'; ?>
-<?php require __DIR__ . '/../fragment/fragmentMenu.php'; ?>
+<!--  -->
 
 <div class="container mt-5">
     <h2>Modifier un créneau</h2>
@@ -30,4 +29,3 @@
 </div>
 
 
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

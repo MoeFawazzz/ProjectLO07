@@ -11,7 +11,7 @@ class ControllerRdv
     {
         // (si vous avez besoin d'auth, insérez checkAuth() ici)
         $rdvs = ModelRdv::getAll();
-        View::render('rdv/listRdvs', ['rdvs' => $rdvs]);
+        View::render('etudiant/listRdvs', ['rdvs' => $rdvs]);
     }
 
     /**

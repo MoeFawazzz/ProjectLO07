@@ -42,10 +42,4 @@ class ModelPersonne extends Model
             'pwd'    => $password,
         ]);
     }
-    public static function getAllEtudiants(): array
-{
-    $sql = "SELECT id, nom, prenom FROM personne WHERE role_etudiant = 1";
-    return self::selectAll($sql);
-}
-
 }

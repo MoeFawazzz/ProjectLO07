@@ -14,15 +14,21 @@ class ModelExaminateur extends Model
         return self::selectAll($sql, ['id' => $idExaminateur]);
     }
 
-    public static function getProjetsByExaminateur($idExaminateur)
-    {
-        $sql = "SELECT DISTINCT PJ.id, PJ.label, PJ.groupe
-                FROM creneau CR
-                JOIN projet PJ ON CR.projet = PJ.id
-                WHERE CR.examinateur = :id";
+  public static function getProjetsByExaminateur(int $examinateurId): array
+{
+    $sql = "
+        SELECT DISTINCT PJ.id, PJ.label, PJ.groupe
+        FROM projet PJ
+        WHERE PJ.id IN (
+            SELECT CR.projet
+            FROM creneau CR
+            WHERE CR.examinateur = :id
+        )
+        OR PJ.responsable = :id
+    ";
 
-        return self::selectAll($sql, ['id' => $idExaminateur]);
-    }
+    return self::selectAll($sql, ['id' => $examinateurId]);
+}
 
     public static function getCreneauxByProjet(int $projetId): array
     {
@@ -107,6 +113,17 @@ public static function deleteCreneauById(int $id): bool
 {
     $sql = "DELETE FROM creneau WHERE id = :id";
     return self::executeQuery($sql, ['id' => $id]);
+}
+
+public static function isCreneauConflict($projetId, $datetime): bool
+{
+    $sql = "SELECT COUNT(*) AS count FROM creneau 
+            WHERE projet = :projet AND creneau = :datetime";
+    $result = self::selectOne($sql, [
+        'projet' => $projetId,
+        'datetime' => $datetime
+    ]);
+    return $result && $result['count'] > 0;
 }
 
 }

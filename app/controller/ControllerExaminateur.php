@@ -133,20 +133,23 @@ public static function ajoutCreneau()
         $datetime = $_POST['datetime'];
         $examId = (int)$_SESSION['login_id'];
 
-        $success = ModelExaminateur::insertCreneau($projetId, $examId, $datetime);
-
-        if ($success) {
-            $message = "Créneau ajouté avec succès.";
-        } else {
-            $message = "Erreur lors de l'ajout.";
+        if (ModelExaminateur::isCreneauConflict($projetId, $datetime)) {
+            View::render('examinateur/message', [
+                'message' => "Un créneau à cette date et heure existe déjà pour ce projet."
+            ]);
+            return;
         }
 
+        $success = ModelExaminateur::insertCreneau($projetId, $examId, $datetime);
+        $message = $success ? "Créneau ajouté avec succès." : "Erreur lors de l'ajout.";
         View::render('examinateur/message', ['message' => $message]);
+
     } else {
         header('Location: index.php?controller=examinateur&action=formAjoutCreneau');
         exit();
     }
 }
+
 
 public static function formAjoutCreneauxConsecutifs()
 {

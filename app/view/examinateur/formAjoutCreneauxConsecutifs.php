@@ -1,8 +1,8 @@
 <!-- app/view/examinateur/formAjoutCreneauxConsecutifs.php -->
 <?php
-require __DIR__ . '/../fragment/fragmentHeader.html';
-require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.php';
+// require __DIR__ . '/../fragment/fragmentHeader.html';
+// require __DIR__ . '/../fragment/fragmentJumbotron.html';
+// require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 
 <div class="container mt-5">
@@ -11,7 +11,7 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
         <div class="mb-3">
             <label for="projet_id" class="form-label">Projet</label>
             <select name="projet_id" id="projet_id" class="form-select" required>
-                <?php foreach ($projets as $p): ?>
+                <?php foreach ($prs as $p): ?>
                     <option value="<?= $p['id'] ?>">
                         <?= htmlspecialchars($p['label']) ?> (Groupe <?= $p['groupe'] ?>)
                     </option>
@@ -38,4 +38,4 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
     </form>
 </div>
 
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>
+

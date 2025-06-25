@@ -65,8 +65,9 @@ $nom      = $_SESSION['login_nom']    ?? '';
               Étudiant
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="index.php?action=listRdvs">Liste de mes RDV</a></li>
-              <li><a class="dropdown-item" href="index.php?action=formPrendreRdv">Prendre un RDV pour un projet</a></li>
+              <a class="dropdown-item" href="index.php?controller=etudiant&action=listRdvs">Liste de mes RDV</a>
+              <li><a class="dropdown-item" href="index.php?controller=etudiant&action=formPrendreRdv">Prendre un RDV pour un projet</a></li>
+
             </ul>
           </li>
         <?php endif; ?>
@@ -88,7 +89,7 @@ $nom      = $_SESSION['login_nom']    ?? '';
           <ul class="dropdown-menu">
             <?php if (!$loggedIn): ?>
               <li><a class="dropdown-item" href="index.php?action=formConnexion">Login</a></li>
-              <li><a class="dropdown-item" href="index.php?action=formInscription">Sign in</a></li>
+              <li><a class="dropdown-item" href="index.php?action=formInscription">Sign up</a></li>
             <?php else: ?>
               <li><a class="dropdown-item" href="index.php?action=logout">Log out</a></li>
             <?php endif; ?>

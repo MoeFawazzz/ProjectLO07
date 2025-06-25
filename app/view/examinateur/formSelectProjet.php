@@ -1,8 +1,8 @@
 <!-- app/view/examinateur/formSelectProjet.php -->
 <?php
-require __DIR__ . '/../fragment/fragmentHeader.html';
-require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.php';
+// require __DIR__ . '/../fragment/fragmentHeader.html';
+// require __DIR__ . '/../fragment/fragmentJumbotron.html';
+// require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 
 <div class="container mt-5">
@@ -22,4 +22,3 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
     </form>
 </div>
 
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

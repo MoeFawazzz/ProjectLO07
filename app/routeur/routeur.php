@@ -8,7 +8,7 @@ require_once __DIR__ . '/../controller/ControllerResponsable.php';
 require_once __DIR__ . '/../controller/ControllerRdv.php';
 require_once __DIR__ . '/../controller/ControllerExaminateur.php';
 require_once __DIR__ . '/../controller/ControllerInnovation.php';
-
+require_once 'app/controller/ControllerEtudiant.php';
 switch ($action) {
     // ------------------------
     // Connexion & Inscription
@@ -107,6 +107,31 @@ case 'editCreneau':
 case 'deleteCreneau':
     ControllerExaminateur::deleteCreneau();
     break;
+  // ------------------------
+    // Etudiant
+    // ------------------------
+    case 'formPrendreRdv':
+    ControllerEtudiant::formPrendreRdv();
+    break;
+
+case 'prendreRdv':
+    ControllerEtudiant::prendreRdv();
+    break;
+    
+    case 'listRdvs':
+    ControllerEtudiant::listRdvs();
+    break;
+
+case 'etudiant':
+ 
+    $action = $_GET['action'] ?? 'defaultAction';
+
+    if (method_exists('ControllerEtudiant', $action)) {
+        ControllerEtudiant::$action();
+    } else {
+        echo "Action $action non trouvée dans ControllerEtudiant.";
+    }
+    break;
 
     // ------------------------
     // RDV
@@ -133,4 +158,5 @@ case 'deleteCreneau':
     case 'proposeMVC':
         ControllerInnovation::proposeMVC();
         break;
+  
 }
