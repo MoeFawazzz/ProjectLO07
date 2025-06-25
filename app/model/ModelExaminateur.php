@@ -126,4 +126,11 @@ public static function isCreneauConflict($projetId, $datetime): bool
     return $result && $result['count'] > 0;
 }
 
+public static function getEtudiantIdByCreneauId(int $creneauId): ?int
+{
+    $sql = "SELECT etudiant FROM rdv WHERE creneau = :id";
+    $result = self::selectOne($sql, ['id' => $creneauId]);
+    return $result ? (int)$result['etudiant'] : null;
+}
+
 }
