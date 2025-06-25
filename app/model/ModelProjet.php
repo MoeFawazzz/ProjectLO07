@@ -87,13 +87,20 @@ public static function getPlanningByExaminateur(int $idExaminateur): array {
 
 public static function getProjetsByExaminateur(int $examinateurId): array
 {
-    $sql = "SELECT DISTINCT PJ.id, PJ.label, PJ.groupe
+    $sql = "
+        SELECT DISTINCT PJ.id, PJ.label, PJ.groupe
+        FROM projet PJ
+        WHERE PJ.id IN (
+            SELECT CR.projet
             FROM creneau CR
-            JOIN projet PJ ON CR.projet = PJ.id
-            WHERE CR.examinateur = :id";
+            WHERE CR.examinateur = :id
+        )
+        OR PJ.responsable = :id
+    ";
 
     return self::selectAll($sql, ['id' => $examinateurId]);
 }
+
 
 public static function getCreneauxByProjet(int $projetId): array
 {
