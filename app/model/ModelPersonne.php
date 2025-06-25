@@ -10,6 +10,12 @@ class ModelPersonne extends Model
         return self::selectOne($sql, ['login' => $login, 'pwd' => $pwd]);
     }
 
+    public static function getByLogin(string $login)
+    {
+        $sql = "SELECT id FROM personne WHERE login = :login";
+        return self::selectOne($sql, ['login' => $login]);
+    }
+
     public static function insertPersonne(
         string $nom,
         string $prenom,
