@@ -75,28 +75,38 @@ class ControllerConnexion
 
     /** Traitement de l’inscription */
     public static function register()
-    {
-        $nom    = trim($_POST['nom']    ?? '');
-        $prenom = trim($_POST['prenom'] ?? '');
-        $login  = trim($_POST['login']  ?? '');
-        $pwd    = trim($_POST['password'] ?? '');
-        $role   = $_POST['role'] ?? '';
-        if ($nom === '' || $prenom === '' || $login === '' || $pwd === '' 
-            || !in_array($role, ['responsable','examinateur','etudiant'])) 
-        {
-            $_SESSION['error_message'] = 'Données d’inscription invalides.';
-            header('Location: index.php?action=formInscription');
-            exit();
-        }
-        $pwd = substr($pwd, 0, 20);  // tronque à 20 chars
-        $ok = ModelPersonne::insertPersonne($nom, $prenom, $login, $pwd, $role);
-        if (!$ok) {
-            $_SESSION['error_message'] = 'Impossible de créer l’utilisateur.';
-            header('Location: index.php?action=formInscription');
-            exit();
-        }
-        $_SESSION['success_message'] = 'Inscription réussie, connectez-vous.';
-        header('Location: index.php?action=formConnexion');
+{
+    $nom     = trim($_POST['nom']     ?? '');
+    $prenom  = trim($_POST['prenom']  ?? '');
+    $login   = trim($_POST['login']   ?? '');
+    $pwd     = trim($_POST['password']?? '');
+    $roles   = $_POST['roles']        ?? [];  // un tableau de 0 à 3 rôles
+
+    // Validation : tous les champs + au moins un rôle
+    if (
+        $nom === '' || $prenom === '' ||
+        $login === '' || $pwd === '' ||
+        !is_array($roles) || empty($roles)
+    ) {
+        $_SESSION['error_message'] = 'Merci de remplir tous les champs et de choisir au moins un rôle.';
+        header('Location: index.php?action=formInscription');
         exit();
     }
+
+    // On tronque le mot de passe à 20 caractères pour tenir dans varchar(20)
+    $pwd = substr($pwd, 0, 20);
+
+    // On transmet le tableau des rôles au modèle
+    $ok = ModelPersonne::insertPersonne($nom, $prenom, $login, $pwd, $roles);
+
+    if (!$ok) {
+        $_SESSION['error_message'] = 'Impossible de créer l’utilisateur.';
+        header('Location: index.php?action=formInscription');
+        exit();
+    }
+
+    $_SESSION['success_message'] = 'Inscription réussie, vous pouvez maintenant vous connecter.';
+    header('Location: index.php?action=formConnexion');
+    exit();
+}
 }

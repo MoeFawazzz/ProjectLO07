@@ -258,9 +258,9 @@ public static function deleteCreneau()
             ? "Créneau supprimé avec succès." 
             : "Erreur lors de la suppression du créneau.";
         
-        require __DIR__ . '/../view/examinateur/message.php';
+        View::render('examinateur/message', ['message' => $message]);
     } else {
-        echo "ID manquant.";
+        View::render('examinateur/message', ['message' => "ID manquant."]);
     }
 }
 

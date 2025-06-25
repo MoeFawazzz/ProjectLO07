@@ -1,6 +1,3 @@
-<?php require __DIR__ . '/../fragment/fragmentHeader.html'; ?>
-<?php require __DIR__ . '/../fragment/fragmentJumbotron.html'; ?>
-<?php require __DIR__ . '/../fragment/fragmentMenu.php'; ?>
 
 <div class="container mt-5">
     <h2>Ajouter un créneau</h2>
@@ -22,5 +19,3 @@
         <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
 </div>
-
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>
