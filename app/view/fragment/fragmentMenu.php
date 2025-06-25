@@ -7,7 +7,7 @@ $loggedIn = !empty($_SESSION['login_id']);
 ?>
 <nav class="navbar navbar-expand-lg bg-success fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand text-white" href="index.php?action=index">LO07 Soutenances</a>
+    <a class="navbar-brand text-white" href="index.php?action=index">DANGUILLAUME / FAWAZ</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
       <span class="navbar-toggler-icon"></span>
     </button>
