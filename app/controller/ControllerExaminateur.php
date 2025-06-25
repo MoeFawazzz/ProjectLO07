@@ -28,7 +28,7 @@ public static function planning()
     self::checkAuth();
     $idExaminateur = (int)$_SESSION['login_id'];
     $creneaux = ModelProjet::getCreneauxByExaminateur($idExaminateur);
-    require __DIR__ . '/../view/examinateur/planningTout.php';
+    View::render('examinateur/planningTout', ['creneaux' => $creneaux]);
 }
 
 
@@ -40,11 +40,14 @@ public static function planning()
     if (!empty($_POST['projet_id'])) {
         $id = intval($_POST['projet_id']);
         $exs = ModelProjet::getExaminateursByProjet($id);
-        require __DIR__ . '/../view/examinateur/listExaminateursProjet.php';
+        View::render('examinateur/listExaminateursProjet', ['exs' => $exs]);
     } else {
         $prs = ModelProjet::getProjetsByExaminateur((int)$_SESSION['login_id']); 
         $action = 'index.php?controller=examinateur&action=listExaminateursProjet';
-        require __DIR__ . '/../view/examinateur/formSelectProjet.php';
+        View::render('examinateur/formSelectProjet', [
+                'prs'    => $prs,
+                'action' => $action
+            ]);
     }
 }
 
@@ -58,11 +61,17 @@ public static function planning()
         $id = intval($_POST['projet_id']);
         $proj = ModelProjet::getProjetById($id);
         $rvs = ModelProjet::getPlanningByProjet($id);
-        require __DIR__ . '/../view/examinateur/planningProjet.php';
+        View::render('examinateur/planningProjet', [
+                'proj' => $proj,
+                'rvs'  => $rvs
+            ]);
     } else {
         $prs = ModelProjet::getProjetsByExaminateur((int)$_SESSION['login_id']); 
         $action = 'index.php?controller=examinateur&action=planningProjet';
-        require __DIR__ . '/../view/examinateur/formSelectProjet.php';
+        View::render('examinateur/formSelectProjet', [
+                'prs'    => $prs,
+                'action' => $action
+            ]);
     }
 }
 
@@ -71,10 +80,12 @@ public static function formSelectProjetCreneaux()
     self::checkAuth();
     $prs = ModelProjet::getProjetsByExaminateur((int)$_SESSION['login_id']); 
     $action = 'index.php?controller=examinateur&action=creneauxProjet';
-    require __DIR__ . '/../view/examinateur/formSelectProjet.php';
-}
+     View::render('examinateur/formSelectProjet', [
+            'prs'    => $prs,
+            'action' => $action
+        ]);
 
-
+    }
 
 public static function creneauxProjet()
 {
@@ -84,7 +95,10 @@ public static function creneauxProjet()
         $id = intval($_POST['projet_id']);
         $proj = ModelProjet::getProjetById($id); 
         $creneaux = ModelProjet::getCreneauxByProjet($id);
-        require __DIR__ . '/../view/examinateur/listCreneauxProjet.php';
+         View::render('examinateur/listCreneauxProjet', [
+                'proj'     => $proj,
+                'creneaux' => $creneaux
+            ]);
     } else {
         header('Location: index.php?controller=examinateur&action=formSelectProjetCreneaux');
         exit();
@@ -95,7 +109,7 @@ public static function creneauxProjet()
     {
         self::checkAuth();
         $prs = ModelProjet::getProjetsByResponsable((int)$_SESSION['login_id']);
-        require __DIR__ . '/../view/responsable/listProjets.php';
+        View::render('responsable/listProjets', ['prs' => $prs]);
     }
 
 public static function formAjoutCreneau()
@@ -104,7 +118,10 @@ public static function formAjoutCreneau()
     $idExaminateur = (int)$_SESSION['login_id'];
     $prs = ModelProjet::getProjetsByExaminateur($idExaminateur); 
     $action = 'index.php?controller=examinateur&action=ajoutCreneau';
-    require __DIR__ . '/../view/examinateur/formAjoutCreneau.php';
+    View::render('examinateur/formAjoutCreneau', [
+            'prs'    => $prs,
+            'action' => $action
+        ]);
 }
 
 public static function ajoutCreneau()
@@ -124,7 +141,7 @@ public static function ajoutCreneau()
             $message = "Erreur lors de l'ajout.";
         }
 
-        require __DIR__ . '/../view/examinateur/message.php';
+        View::render('examinateur/message', ['message' => $message]);
     } else {
         header('Location: index.php?controller=examinateur&action=formAjoutCreneau');
         exit();
@@ -134,9 +151,10 @@ public static function ajoutCreneau()
 public static function formAjoutCreneauxConsecutifs()
 {
     self::checkAuth();
-    $idExam = (int)$_SESSION['login_id'];
-    $projets = ModelProjet::getProjetsByExaminateur($idExam); 
-    require __DIR__ . '/../view/examinateur/formAjoutCreneauxConsecutifs.php';
+    $prs = ModelProjet::getProjetsByExaminateur((int)$_SESSION['login_id']);
+    View::render('examinateur/formAjoutCreneauxConsecutifs', [
+        'prs' => $prs
+    ]);
 }
 
 
@@ -159,7 +177,7 @@ public static function ajoutCreneauxConsecutifs()
         header('Location: index.php?controller=examinateur&action=planning');
         exit();
     } else {
-        echo "<p class='text-danger'>Données incomplètes</p>";
+        View::render('examinateur/message', ['message' => "Données incomplètes"]);
     }
 }
 
@@ -193,7 +211,7 @@ public static function editCreneau()
 
         if (ModelExaminateur::doesCreneauExist($datetime, $id)) {
             $message = "Un créneau existe déjà à cette date et heure.";
-            require __DIR__ . '/../view/examinateur/message.php';
+             View::render('examinateur/message', ['message' => "Un créneau existe déjà à cette date et heure."]);
             return;
         }
 
@@ -206,7 +224,7 @@ public static function editCreneau()
         }
 
         $message = $success ? "Créneau modifié avec succès." : "Erreur lors de la modification.";
-        require __DIR__ . '/../view/examinateur/message.php';
+        View::render('examinateur/message', ['message' => $message]);
     } else {
         echo "Données incomplètes.";
     }

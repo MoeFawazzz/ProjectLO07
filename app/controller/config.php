@@ -5,7 +5,7 @@ if (!defined('DEBUG')) {
 }
 
 // --- Define environment
-define('LOCAL', TRUE); // Set to FALSE if you want to work on dev-isi
+define('LOCAL', FALSE); // Set to FALSE if you want to work on dev-isi
 
 if (LOCAL) {
     define('DB_DSN', 'mysql:dbname=projet_lo07;host=localhost;charset=utf8');
