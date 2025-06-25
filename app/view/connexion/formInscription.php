@@ -1,8 +1,5 @@
 <?php
 // app/view/connexion/formInscription.php
-require __DIR__ . '/../fragment/fragmentHeader.html';
-require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 <div class="container mt-4 pt-5">
   <h2>Inscription</h2>
@@ -40,4 +37,3 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
     <button type="submit" class="btn btn-success">S'inscrire</button>
   </form>
 </div>
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

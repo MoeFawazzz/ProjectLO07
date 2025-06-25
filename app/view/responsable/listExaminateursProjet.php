@@ -1,8 +1,5 @@
 <?php
 // app/view/responsable/listExaminateursProjet.php
-require __DIR__ . '/../fragment/fragmentHeader.html';
-require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 <div class="container mt-4 pt-5">
   <h2>Examinateurs du projet sélectionné</h2>
@@ -19,4 +16,3 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
   <?php endif; ?>
   <a href="index.php?action=listProjets" class="btn btn-secondary mt-3">Retour</a>
 </div>
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

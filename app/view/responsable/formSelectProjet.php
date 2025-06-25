@@ -1,8 +1,5 @@
 <?php
 // app/view/responsable/formSelectProjet.php
-require __DIR__ . '/../fragment/fragmentHeader.html';
-require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 <div class="container mt-5 pt-5">
   <h2>Sélectionnez un projet</h2>
@@ -20,4 +17,3 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
   </form>
 </div>
 
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>
