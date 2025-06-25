@@ -1,6 +1,5 @@
 <?php
 // app/controller/ControllerInnovation.php
-require_once(__DIR__ . '/../model/Model.php');
 
 class ControllerInnovation
 {
@@ -10,11 +9,11 @@ class ControllerInnovation
     public static function proposeFeature()
     {
         // Aucun traitement métier, c'est juste une page statique
-        require __DIR__ . '/../view/innovation/proposeFeature.php';
+        View::render('innovation/proposeFeature');
     }
 
     public static function proposeMVC()
     {
-        require __DIR__ . '/../view/innovation/proposeMVC.php';
+        View::render('innovation/proposeMVC');
     }
 }

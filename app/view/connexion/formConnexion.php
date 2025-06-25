@@ -1,8 +1,5 @@
 <?php
 // app/view/connexion/formConnexion.php
-require __DIR__ . '/../fragment/fragmentHeader.html';
-require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 <div class="container mt-4 pt-5">
   <h2>Connexion</h2>
@@ -24,4 +21,3 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
     <button type="submit" class="btn btn-primary">Se connecter</button>
   </form>
 </div>
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

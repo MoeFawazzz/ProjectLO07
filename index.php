@@ -11,5 +11,7 @@ if (!isset($_GET['action'])) {
     $_SESSION['login_nom']    = '';
 }
 
+require __DIR__ . '/app/core/View.php';
+
 // Maintenant, on appelle le routeur normalement
 require __DIR__ . '/app/routeur/routeur.php';

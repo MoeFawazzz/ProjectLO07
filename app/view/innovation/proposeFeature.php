@@ -1,8 +1,5 @@
 <?php
 // app/view/innovation/proposeFeature.php
-require __DIR__ . '/../fragment/fragmentHeader.html';
-require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 
 <div class="container mt-4 pt-5">
@@ -13,8 +10,8 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
     <div class="card-body bg-light">
       <h5 class="card-title">Sujet :</h5>
       <p class="card-text">
-        Proposez une fonctionnalité originale qui pourrait enrichir l’application de gestion des soutenances :  
-        module de messagerie interne, notifications temps réel, export PDF des plannings, recherche avancée, etc.  
+        Proposez une fonctionnalité originale qui pourrait enrichir l’application de gestion des soutenances :
+        module de messagerie interne, notifications temps réel, export PDF des plannings, recherche avancée, etc.
         Expliquez clairement :
       </p>
       <ul>
@@ -29,5 +26,3 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
 
   <a href="index.php?action=index" class="btn btn-secondary">← Retour</a>
 </div>
-
-<?php require __DIR__ . '/../fragment/fragmentFooter.html'; ?>

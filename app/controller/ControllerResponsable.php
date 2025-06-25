@@ -18,15 +18,15 @@ class ControllerResponsable
     public static function listProjets()
     {
         self::checkAuth();
-        $prs = ModelProjet::getProjetsByResponsable((int)$_SESSION['login_id']);
-        require __DIR__ . '/../view/responsable/listProjets.php';
+        $prs = ModelProjet::getProjetsByResponsable($_SESSION['login_id']);
+        View::render('responsable/listProjets', ['prs' => $prs]);
     }
 
     // 3) FORMULAIRE AJOUT PROJET
     public static function formAjoutProjet()
     {
         self::checkAuth();
-        require __DIR__ . '/../view/responsable/formAjoutProjet.php';
+        View::render('responsable/formAjoutProjet');
     }
 
     // 4) TRAITEMENT AJOUT PROJET
@@ -50,45 +50,45 @@ class ControllerResponsable
     {
         self::checkAuth();
         $exs = ModelProjet::getAllExaminateurs();
-        require __DIR__ . '/../view/responsable/listExaminateurs.php';
+        View::render('responsable/listExaminateurs', ['exs' => $exs]);
     }
 
     // 6) FORMULAIRE AJOUT EXAMINATEUR
     public static function formAjoutExaminateur()
     {
         self::checkAuth();
-        require __DIR__ . '/../view/responsable/formAjoutExaminateur.php';
+        View::render('responsable/formAjoutExaminateur');
     }
 
     // 7) TRAITEMENT AJOUT EXAMINATEUR
     public static function ajoutExaminateur()
-{
-    self::checkAuth();
-    $nom    = trim($_POST['nom']    ?? '');
-    $prenom = trim($_POST['prenom'] ?? '');
+    {
+        self::checkAuth();
+        $nom    = trim($_POST['nom']    ?? '');
+        $prenom = trim($_POST['prenom'] ?? '');
 
-    if ($nom === '' || $prenom === '') {
-        $_SESSION['error_message'] = 'Données invalides pour l\'examinateur.';
-        header('Location: index.php?action=formAjoutExaminateur');
+        if ($nom === '' || $prenom === '') {
+            $_SESSION['error_message'] = 'Données invalides pour l\'examinateur.';
+            header('Location: index.php?action=formAjoutExaminateur');
+            exit();
+        }
+
+        // 1) Génération tronquée pour coller au varchar(20)
+        $login    = substr(uniqid(), 0, 15);
+        $password = substr(md5(uniqid()), 0, 20);
+
+        // 2) Insertion en base
+        ModelPersonne::insertPersonne($nom, $prenom, $login, $password, 'examinateur');
+
+        // 3) Message de confirmation (facultatif)
+        $_SESSION['success_message'] =
+            "Examinateur créé !<br>"
+            . "Login : <strong>$login</strong><br>"
+            . "Mot de passe : <strong>$password</strong>";
+
+        header('Location: index.php?action=listExaminateurs');
         exit();
     }
-
-    // 1) Génération tronquée pour coller au varchar(20)
-    $login    = substr(uniqid(), 0, 15);
-    $password = substr(md5(uniqid()), 0, 20);
-
-    // 2) Insertion en base
-    ModelPersonne::insertPersonne($nom, $prenom, $login, $password, 'examinateur');
-
-    // 3) Message de confirmation (facultatif)
-    $_SESSION['success_message'] =
-        "Examinateur créé !<br>"
-      . "Login : <strong>$login</strong><br>"
-      . "Mot de passe : <strong>$password</strong>";
-
-    header('Location: index.php?action=listExaminateurs');
-    exit();
-}
 
 
     // 8) LISTE DES EXAMINATEURS D’UN PROJET
@@ -98,10 +98,10 @@ class ControllerResponsable
         if (!empty($_POST['projet_id'])) {
             $id  = intval($_POST['projet_id']);
             $exs = ModelProjet::getExaminateursByProjet($id);
-            require __DIR__ . '/../view/responsable/listExaminateursProjet.php';
+            View::render('responsable/listExaminateursProjet', ['exs' => $exs]);
         } else {
             $prs = ModelProjet::getProjetsByResponsable((int)$_SESSION['login_id']);
-            require __DIR__ . '/../view/responsable/formSelectProjet.php';
+            View::render('responsable/formSelectProjet', ['prs' => $prs]);
         }
     }
 
@@ -113,10 +113,10 @@ class ControllerResponsable
             $id   = intval($_POST['projet_id']);
             $proj = ModelProjet::getProjetById($id);
             $rvs  = ModelProjet::getPlanningByProjet($id);
-            require __DIR__ . '/../view/responsable/planningProjet.php';
+            View::render('responsable/planningProjet', ['proj' => $proj, 'rvs' => $rvs]);
         } else {
             $prs = ModelProjet::getProjetsByResponsable((int)$_SESSION['login_id']);
-            require __DIR__ . '/../view/responsable/formSelectProjet.php';
+            View::render('responsable/formSelectProjet', ['prs' => $prs]);
         }
     }
 }

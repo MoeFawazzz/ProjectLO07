@@ -21,7 +21,7 @@ class ControllerConnexion
     /** Formulaire de connexion */
     public static function formConnexion()
     {
-        require __DIR__ . '/../view/connexion/formConnexion.php';
+        View::render('connexion/formConnexion');
     }
 
     /** Traitement du login */
@@ -70,7 +70,7 @@ class ControllerConnexion
     /** Formulaire d’inscription */
     public static function formInscription()
     {
-        require __DIR__ . '/../view/connexion/formInscription.php';
+        View::render('connexion/formInscription');
     }
 
     /** Traitement de l’inscription */

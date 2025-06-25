@@ -1,8 +1,5 @@
 <?php
 // app/view/innovation/proposeMVC.php
-require __DIR__ . '/../fragment/fragmentHeader.html';
-require __DIR__ . '/../fragment/fragmentJumbotron.html';
-require __DIR__ . '/../fragment/fragmentMenu.php';
 ?>
 
 <div class="container mt-4 pt-5">
@@ -10,100 +7,86 @@ require __DIR__ . '/../fragment/fragmentMenu.php';
 
   <div class="card mb-4">
     <div class="card-body">
+
       <h4 class="card-title">
-        Standardiser l’autoloading PSR-4 et réorganiser les dossiers par domaine fonctionnel
+        Centraliser le rendu des vues via une classe View::render()
       </h4>
 
       <h5>Contexte</h5>
       <p>
-        Actuellement, chaque contrôleur, modèle et vue est inclus manuellement via des
-        <code>require</code> ou <code>include</code>. Dès que le projet grandit :
+        Jusqu’à présent, chaque contrôleur répétait manuellement les inclusions des fragments :
       </p>
-      <ul>
-        <li>Les lignes d’inclusion se multiplient.</li>
-        <li>On perd en lisibilité et en cohérence de l’arborescence.</li>
-        <li>Le risque d’oublis d’inclusion ou de collisions de noms augmente.</li>
-      </ul>
+      <pre><code class="language-php">&lt;?php
+require __DIR__ . '/../view/fragment/fragmentHeader.html';
+require __DIR__ . '/../view/fragment/fragmentJumbotron.html';
+require __DIR__ . '/../view/fragment/fragmentMenu.php';
+require __DIR__ . '/../view/fragment/fragmentFooter.html';
+</code></pre>
+      <p>
+        Cette duplication alourdit les contrôleurs, multiplie les risques d’oubli et rend le code moins lisible.
+      </p>
 
       <h5>Solution proposée</h5>
       <p>
-        Adopter le standard <strong>PSR-4</strong> via Composer et organiser vos classes
-        dans des namespaces reflétant leur domaine métier. Concrètement :
+        Créer une classe utilitaire <code>View</code> qui encapsule tout le layout (header, jumbotron, menu, footer)
+        et n’apparaît qu’en un seul appel :
       </p>
+      <pre><code class="language-php">&lt;?php
+View::render('innovation/proposeMVC');
+</code></pre>
+      <p>
+        Les contrôleurs se concentrent ainsi uniquement sur la logique métier et la récupération des données.
+      </p>
+
+      <h5>Implémentation</h5>
       <ol>
         <li>
-          <strong>composer.json</strong>  
-          <pre><code>{
-  "autoload": {
-    "psr-4": {
-      "App\\Controller\\": "app/controller/",
-      "App\\Model\\":      "app/model/",
-      "App\\View\\":       "app/view/"
+          <strong>Créer</strong> <code>app/core/View.php</code> :
+          <pre><code class="language-php">&lt;?php
+class View
+{
+    public static function render(string $name, array $params = [])
+    {
+        extract($params, EXTR_SKIP);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        require __DIR__ . '/../view/fragment/fragmentHeader.html';
+        require __DIR__ . '/../view/fragment/fragmentJumbotron.html';
+        require __DIR__ . '/../view/fragment/fragmentMenu.php';
+        require __DIR__ . '/../view/' . $name . '.php';
+        require __DIR__ . '/../view/fragment/fragmentFooter.html';
     }
-  }
-}</code></pre>
-        </li>
-        <li>
-          Exécuter <code>composer dump-autoload</code> pour générer automatiquement
-          <code>vendor/autoload.php</code>.
-        </li>
-        <li>
-          Ajouter le namespace dans chaque classe :
-          <pre><code>&lt;?php
-namespace App\Controller;
-
-class ControllerProjet {
-    public static function listProjets() { /* … */ }
 }
 </code></pre>
         </li>
         <li>
-          Dans <code>public/index.php</code> (front-controller unique) :
-          <pre><code>&lt;?php
-require __DIR__ . '/../vendor/autoload.php';
+          <strong>Charger</strong> cette classe dans <code>index.php</code> juste avant le routeur :
+          <pre><code class="language-php">&lt;?php
 session_start();
-
-$action = $_GET['action'] ?? 'index';
-[$ctrl, $meth] = explode('-', $action, 2);
-// ex. action=listProjets → ['listProjets','']
-$controller = 'App\\Controller\\Controller' . ucfirst($ctrl);
-if (method_exists($controller, $meth)) {
-    call_user_func([ $controller, $meth ]);
-} else {
-    http_response_code(404);
-    echo "Action inconnue";
-}
+require __DIR__ . '/app/core/View.php';
+require __DIR__ . '/app/routeur/routeur.php';
+</code></pre>
+        </li>
+        <li>
+          <strong>Remplacer</strong> dans chaque contrôleur les inclusions de fragments par un unique appel :
+          <pre><code class="language-php">&lt;?php
+$data = ModelX::findAll();
+View::render('x/list', ['data' => $data]);
 </code></pre>
         </li>
       </ol>
 
-      <h5>Nouvelle arborescence</h5>
-      <pre>
-mon-projet/
-├─ composer.json
-├─ public/
-│  └─ index.php          ← front-controller unique
-├─ vendor/…              ← autoloader Composer
-└─ app/
-   ├─ controller/        ← App\Controller\
-   ├─ model/             ← App\Model\
-   └─ view/              ← App\View\
-       ├─ fragment/
-       └─ innovation/
-      </pre>
-
       <h5>Avantages</h5>
       <ul>
-        <li>Plus d’inclusions manuelles : Composer charge automatiquement chaque classe.</li>
-        <li>Clarté & découplage : dossiers et namespaces reflètent votre domaine métier.</li>
-        <li>Interopérabilité : adoption d’un standard reconnu dans l’écosystème PHP.</li>
-        <li>Maintenance & tests : facilite le refactoring, le mock des classes et l’intégration de tests unitaires.</li>
+        <li>Plus de duplication des inclusions : un seul point d’appel.</li>
+        <li>Sécurité : impossibilité d’oublier un fragment.</li>
+        <li>Clarté : les contrôleurs ne contiennent plus de HTML.</li>
+        <li>Maintenance : modification du layout en un seul fichier.</li>
       </ul>
 
       <a href="index.php?action=index" class="btn btn-secondary mt-3">← Retour</a>
+
     </div>
   </div>
 </div>
-
-<?php
-require __DIR__ . '/../fragment/fragmentFooter.html';

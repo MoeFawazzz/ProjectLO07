@@ -11,7 +11,7 @@ class ControllerRdv
     {
         // (si vous avez besoin d'auth, insérez checkAuth() ici)
         $rdvs = ModelRdv::getAll();
-        require __DIR__ . '/../view/rdv/listRdvs.php';
+        View::render('rdv/listRdvs', ['rdvs' => $rdvs]);
     }
 
     /**
@@ -22,7 +22,7 @@ class ControllerRdv
         $id = intval($_GET['id'] ?? 0);
         if ($id > 0) {
             $rdv = ModelRdv::getById($id);
-            require __DIR__ . '/../view/rdv/detailRdv.php';
+            View::render('rdv/detailRdv', ['rdv' => $rdv]);
         } else {
             header('Location: index.php?action=listRdvs');
             exit();
